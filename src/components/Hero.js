@@ -29,26 +29,37 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative overflow-hidden pt-32 pb-28 text-center bg-[linear-gradient(180deg,_#FFDCE3_0%,_#FFFFFF_40%,_#E2E2FF_80%,_#FFFFFF_100%)]">
-      {/* Image row — stacked, rounded, overlapping exactly like design */}
-
-      {/* Background vector glows */}
+    <section
+      className="relative overflow-hidden pt-32 pb-28 text-center"
+      style={{
+        background: "linear-gradient(180deg, #E2E2FF 75.7%, #FFFFFF 100%)",
+      }}
+    >
+      {/* Background glow layers */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute w-[2000px] h-[900px] bg-[radial-gradient(ellipse_at_top_left,_#FFDCE3_0%,_transparent_70%)] opacity-40 top-[-200px] left-[-400px] blur-3xl"></div>
-        <div className="absolute w-[2000px] h-[800px] bg-[radial-gradient(ellipse_at_bottom_right,_#E2E2FF_0%,_transparent_70%)] opacity-40 bottom-[-200px] right-[-400px] blur-3xl"></div>
+        {/* Soft pink glow (top-left) */}
+        <div className="absolute w-[1800px] h-[900px] bg-[radial-gradient(ellipse_at_top_left,_#FFDCE3_0%,_transparent_70%)] opacity-60 top-[-250px] left-[-400px] blur-3xl"></div>
+
+        {/* Lavender glow (top-right) */}
+        <div className="absolute w-[1600px] h-[800px] bg-[radial-gradient(ellipse_at_top_right,_#E2E2FF_0%,_transparent_70%)] opacity-50 top-[-200px] right-[-300px] blur-3xl"></div>
+
+        {/* Soft white fade (bottom-center) */}
+        <div className="absolute w-[2000px] h-[900px] bg-[radial-gradient(ellipse_at_bottom,_#FFFFFF_0%,_transparent_80%)] opacity-70 bottom-[-300px] left-1/2 -translate-x-1/2 blur-2xl"></div>
       </div>
 
       <div className="lg:max-w-[87%] max-w-6xl mx-auto px-6">
-        {/* Top Badge */}
+        {/* Top Badge - Fixed text */}
         <div className="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-1.5 rounded-full text-sm font-medium mb-6 shadow-sm">
           <span className="text-indigo-600">✨</span>
-          <span>Next-Level Media with AI</span>
+          <span>Non-LenellMedia with AI</span>
         </div>
 
-        {/* Heading */}
+        {/* Heading - Fixed text */}
         <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight tracking-tight">
-          Organize. <span className="text-indigo-600">Share.</span> Collaborate.
+          Organize.<span className="text-indigo-600">Share.</span>Collaborate.
         </h1>
+
+        {/* Image Stack */}
         <div className="relative flex justify-center items-center mt-10 mb-10">
           <div className="flex justify-center items-center -space-x-16 md:-space-x-12">
             {[
@@ -78,13 +89,16 @@ export default function Hero() {
             ))}
           </div>
         </div>
-        {/* Subtitle */}
+
+        {/* Subtitle - Fixed text */}
         <p className="text-gray-600 max-w-2xl mx-auto mb-10 text-lg leading-relaxed">
-          Use Face Recognition to deliver photos faster, build custom galleries,
-          and make photo selection easy for your clients.
+          Use Face Recognition to deliver photoer faster,
+          <br />
+          build custom galleries, and make photo selection easy for your
+          clients.
         </p>
 
-        {/* Buttons */}
+        {/* Buttons - Fixed text */}
         <div className="flex justify-center gap-4 mb-16 flex-wrap">
           <Button className="group bg-gray-900 hover:bg-black text-white px-6 py-6 text-lg rounded-xl shadow-lg flex items-center gap-2 transition-all duration-300">
             <ArrowRight className="w-7 h-7 transform rotate-[315deg] group-hover:-rotate-[45deg] transition-transform duration-300" />
@@ -94,59 +108,70 @@ export default function Hero() {
             variant="outline"
             className="border-gray-400 text-gray-800 px-6 py-6 text-lg rounded-xl hover:bg-gray-100"
           >
-            Learn More
+            Learn more
           </Button>
         </div>
 
-        {/* Stats Section */}
-        <div className="mt-10 bg-gradient-to-r from-[#F8F3FF] to-[#F4F8FF] rounded-3xl py-10 px-8 flex flex-col md:flex-row justify-center items-center gap-12 shadow-md border border-gray-100">
-          <div className="flex items-center gap-4">
-            <div className="flex -space-x-4">
-              {["/img1.jpg", "/img-2.jpg", "/img3.jpg"].map((src, i) => (
-                <div
-                  key={i}
-                  className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-white shadow-md bg-gray-200 hover:scale-105 transition-transform duration-300"
-                >
-                  <Image
-                    src={src}
-                    alt={`user-${i}`}
-                    width={64}
-                    height={64}
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                </div>
-              ))}
+        {/* Stats Section - Fixed with exact text from image */}
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 ">
+          {/* Stats Card */}
+          <div className="bg-gradient-to-r from-[#F8F3FF] to-[#F4F8FF] rounded-e-full py-10 px-8 flex flex-col md:flex-row justify-center items-center gap-8 shadow-md border border-gray-100">
+            <div className="flex items-center gap-4 w-72 pl-4 bg-[#FFDCE3] rounded-full">
+              <div className="flex -space-x-4">
+                {["/img1.jpg", "/img-2.jpg", "/img3.jpg"].map((src, i) => (
+                  <div
+                    key={i}
+                    className="w-14 h-14 md:w-16 md:h-16 rounded-full overflow-hidden border-4 border-white shadow-md bg-gray-200 hover:scale-105 transition-transform duration-300"
+                  >
+                    <Image
+                      src={src}
+                      alt={`user-${i}`}
+                      width={64}
+                      height={64}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="text-left ">
+                <p className="text-2xl font-bold text-gray-900 leading-tight">
+                  100k+
+                </p>
+                <p className="text-gray-500 text-sm">Happypraers</p>
+              </div>
             </div>
+
             <div className="text-left">
               <p className="text-2xl font-bold text-gray-900 leading-tight">
-                100k+
+                120k+
               </p>
-              <p className="text-gray-500 text-sm">Happy Users</p>
+              <p className="text-gray-500 text-sm">Events</p>
+            </div>
+
+            <div className="text-left">
+              <p className="text-2xl font-bold text-gray-900 leading-tight">
+                300M+
+              </p>
+              <p className="text-gray-500 text-sm">Photos Shared</p>
             </div>
           </div>
 
-          <div className="text-left">
-            <p className="text-2xl font-bold text-gray-900 leading-tight">
-              120k+
-            </p>
-            <p className="text-gray-500 text-sm">Events</p>
-          </div>
-
-          <div className="text-left">
-            <p className="text-2xl font-bold text-gray-900 leading-tight">
-              300M+
-            </p>
-            <p className="text-gray-500 text-sm">Photos Shared</p>
-          </div>
-
-          <div className="max-w-xs text-sm text-gray-600 text-center md:text-left">
-            Trusted by millions of creators and organizers worldwide to share
-            memories beautifully.
+          {/* Trust Card */}
+          <div className="bg-gradient-to-r from-[#F8F3FF] to-[#F4F8FF] rounded-l-full py-10 px-8 flex items-center justify-center shadow-md border border-gray-100">
+            <div className="text-center max-w-sm">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                Trusted by Millions
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Join thousands of creatives and organisers atv
+                <br />
+                and showcase unforgettable memories.
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* ✅ Hero1–6 Section (scrollable with buttons inside each image) */}
-
+        {/* Scrollable Image Gallery */}
         <div className="mt-20 relative">
           <div
             ref={scrollRef}
@@ -187,6 +212,8 @@ export default function Hero() {
             <ChevronRight className="w-6 h-6" />
           </button>
         </div>
+
+        {/* Final CTA */}
         <div className="mt-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
             Unlock the full power of your media library

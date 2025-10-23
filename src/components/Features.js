@@ -105,18 +105,17 @@ export default function Features() {
           <CardContent className="p-0">
             <Image
               src="/f4.jpg"
-              alt="Private and Secure Delivery"
+              alt="Fast Search and Retrieval"
               width={400}
               height={250}
-              className="rounded-xl mb-4"
+              className="rounded-xl mb-4 h-68 object-cover"
             />
             <h3 className="text-xl font-semibold mb-2">
-              Private and Secure Delivery
+              Fast Search & Easy Retrieval
             </h3>
             <p className="text-gray-600 text-sm">
-              Easily share collections with only the intended people. Enjoy
-              end-to-end encryption, password protection, and flexible access
-              settings.
+              Locate photos instantly by searching a person’s name. AI-powered
+              search ensures your memories are always just a click away.
             </p>
           </CardContent>
         </Card>

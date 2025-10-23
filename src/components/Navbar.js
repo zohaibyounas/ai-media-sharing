@@ -17,10 +17,10 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-white/60 backdrop-blur-md border-b border-gray-200">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-[#E2E2FF]  backdrop-blur-md border-b border-gray-200">
       <div className="max-w-7xl lg:max-w-[87%] mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
-        <div className="font-semibold text-gray-900 text-lg">Logo here</div>
+        <div className="font-semibold text-gray-900 text-lg">Logohere</div>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex space-x-8 text-gray-700 font-medium">

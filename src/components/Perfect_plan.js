@@ -17,11 +17,11 @@ export default function PerfectPlan() {
         </p>
 
         {/* Toggle */}
-        <div className="mt-6 inline-flex bg-gray-100 p-1 rounded-full">
-          <button className="px-5 py-2 rounded-full bg-white shadow text-gray-800 font-medium">
+        <div className="mt-6 inline-flex  p-1 rounded-full">
+          <button className="px-5 py-2 rounded-full bg-white  text-gray-800 font-medium">
             Month Plan
           </button>
-          <button className="px-5 py-2 rounded-full text-gray-600 font-medium">
+          <button className="px-5 py-2 rounded-full text-white font-medium shadow bg-[#101828]">
             Annual Plan
           </button>
         </div>
@@ -46,134 +46,156 @@ export default function PerfectPlan() {
               </div>
             </div>
 
-            {/* ✅ Rider */}
-            <div className="py-8 w-1/6 border-r">
-              <h4 className="font-semibold text-gray-900">RIDER</h4>
-              <p className="text-xl font-bold mt-2">FREE</p>
-              <p className="text-gray-500 text-sm">for Lifetime</p>
-              <Button variant="outline" className="mt-4 rounded-full px-6">
-                Start Now
-              </Button>
-              <div className="mt-8 space-y-[38px] text-gray-700 text-sm">
-                <p className="border-t pt-3">50GB</p>
-                <p className="border-t pt-3">None</p>
-                <p className="border-t pt-3 flex justify-center">
-                  <Circle className="w-5 h-5 text-yellow-400" />
-                </p>
-                <p className="border-t pt-3">None</p>
-                <p className="border-t pt-3">5</p>
-                <p className="border-t pt-3">Foto Owl Domain</p>
-              </div>
-            </div>
+            {/* ✅ Plan Columns (with hover effect) */}
+            {[
+              {
+                name: "RIDER",
+                price: "FREE",
+                sub: "for Lifetime",
+                btn: "Start Now",
+                features: [
+                  "50GB",
+                  "None",
+                  "Partial",
+                  "None",
+                  "5",
+                  "Foto Owl Domain",
+                ],
+              },
+              {
+                name: "SKATER SMALL",
+                price: "$16 Per Month",
+                sub: "Billed: Every Year",
+                btn: "Select",
+                features: ["50GB", "Limited", "Full", "None", "50", "fotoowl"],
+              },
+              {
+                name: "SKATER",
+                price: "$16 Per Month",
+                sub: "Billed: Every Year",
+                btn: "Select",
+                features: [
+                  "100GB",
+                  "Limited",
+                  "Full",
+                  "None",
+                  "100",
+                  "fotoowl",
+                ],
+              },
+              {
+                name: "BIKER",
+                price: "$24 Per Month",
+                sub: "Billed: Every Year",
+                btn: "Select",
+                highlight: true,
+                features: [
+                  "500GB",
+                  "Limited",
+                  "Full",
+                  "10 Memories: Save 200GB",
+                  "500",
+                  "Custom Subdomain",
+                ],
+              },
+              {
+                name: "PILOT",
+                price: "$31 Per Month",
+                sub: "Billed: Every Year",
+                btn: "Select",
+                features: [
+                  "1000GB",
+                  "Limited",
+                  "Full",
+                  "15 Memories: Save 300GB",
+                  "1000",
+                  "Customisable",
+                ],
+              },
+              {
+                name: "ASTRONAUT",
+                price: "Contact Us",
+                sub: "Billed: Every Year",
+                btn: "Contact Us",
+                outline: true,
+                features: [
+                  "Customisable",
+                  "Limited",
+                  "Full",
+                  "Customisable",
+                  "Customisable",
+                  "Customisable",
+                ],
+              },
+            ].map((plan, i) => (
+              <div
+                key={i}
+                className={`py-8 w-1/6 border-r relative transition-all duration-300 rounded-3xl hover:bg-[#26395F] hover:text-white ${
+                  plan.highlight ? "bg-[#26395F] text-white" : ""
+                }`}
+              >
+                {/* Highlight Tag */}
+                {plan.highlight && (
+                  <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-white text-[#0d1b2a] w-32 text-xs font-semibold px-2 py-2 rounded-full shadow">
+                    Best Value Plan
+                  </div>
+                )}
 
-            {/* ✅ Skater Small */}
-            <div className="py-8 w-1/6 border-r">
-              <h4 className="font-semibold text-gray-900">SKATER SMALL</h4>
-              <p className="text-xl font-bold mt-2">$16 Per Month</p>
-              <p className="text-gray-500 text-sm">Billed: Every Year</p>
-              <Button className="mt-4 rounded-full px-6 bg-gray-900 text-white">
-                Select
-              </Button>
-              <div className="mt-8 space-y-[38px] text-gray-700 text-sm">
-                <p className="border-t pt-3">50GB</p>
-                <p className="border-t pt-3">Limited</p>
-                <p className="border-t pt-3 flex justify-center">
-                  <Check className="w-5 h-5 text-green-500" />
-                </p>
-                <p className="border-t pt-3">None</p>
-                <p className="border-t pt-3">50</p>
-                <p className="border-t pt-3">fotoowl</p>
-              </div>
-            </div>
+                {/* Header */}
+                <div className={`${plan.highlight ? "mt-8" : ""}`}>
+                  <h4 className="font-semibold">{plan.name}</h4>
+                  <p className="text-xl font-bold mt-2">{plan.price}</p>
+                  <p
+                    className={`text-sm ${
+                      plan.highlight
+                        ? "text-gray-300"
+                        : "text-gray-500 group-hover:text-gray-200"
+                    }`}
+                  >
+                    {plan.sub}
+                  </p>
 
-            {/* ✅ Skater */}
-            <div className="py-8 w-1/6 border-r">
-              <h4 className="font-semibold text-gray-900">SKATER</h4>
-              <p className="text-xl font-bold mt-2">$16 Per Month</p>
-              <p className="text-gray-500 text-sm">Billed: Every Year</p>
-              <Button className="mt-4 rounded-full px-6 bg-gray-900 text-white">
-                Select
-              </Button>
-              <div className="mt-8 space-y-[38px] text-gray-700 text-sm">
-                <p className="border-t pt-3">100GB</p>
-                <p className="border-t pt-3">Limited</p>
-                <p className="border-t pt-3 flex justify-center">
-                  <Check className="w-5 h-5 text-green-500" />
-                </p>
-                <p className="border-t pt-3">None</p>
-                <p className="border-t pt-3">100</p>
-                <p className="border-t pt-3">fotoowl</p>
-              </div>
-            </div>
+                  {plan.outline ? (
+                    <Button
+                      variant="outline"
+                      className="mt-4 rounded-full px-6 bg-white/10 text-black hover:bg-white hover:text-[#0d1b2a]"
+                    >
+                      {plan.btn}
+                    </Button>
+                  ) : (
+                    <Button className="mt-4 rounded-full px-6 bg-gray-900 text-white hover:bg-white hover:text-[#0d1b2a]">
+                      {plan.btn}
+                    </Button>
+                  )}
+                </div>
 
-            {/* ✅ Biker (Highlighted) */}
-            <div className="py-8 w-1/6 border-r bg-[#26395F] text-white relative rounded-3xl">
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 bg-white text-[#0d1b2a] w-32 text-xs font-semibold px-2 py-2 rounded-full shadow">
-                Best Value Plan
+                {/* Features */}
+                <div className="mt-8 space-y-[38px] text-sm">
+                  {plan.features.map((f, idx) => (
+                    <p
+                      key={idx}
+                      className={`border-t pt-3 transition-colors duration-200 ${
+                        plan.highlight
+                          ? "border-gray-700 text-gray-200"
+                          : "border-gray-200 hover:text-white"
+                      }`}
+                    >
+                      {f.includes("Full") ? (
+                        <span className="flex justify-center">
+                          <Check className="w-5 h-5 text-green-400" />
+                        </span>
+                      ) : f.includes("Partial") ? (
+                        <span className="flex justify-center">
+                          <Circle className="w-5 h-5 text-yellow-400" />
+                        </span>
+                      ) : (
+                        f
+                      )}
+                    </p>
+                  ))}
+                </div>
               </div>
-              <div className="mt-8">
-                <h4 className="font-semibold">BIKER</h4>
-                <p className="text-xl font-bold mt-2">$24 Per Month</p>
-                <p className="text-gray-300 text-sm">Billed: Every Year</p>
-                <Button className="mt-4 rounded-full px-6 bg-white text-[#0d1b2a] hover:bg-gray-100">
-                  Select
-                </Button>
-              </div>
-              <div className="mt-8 space-y-[38px] text-gray-200 text-sm">
-                <p className="border-t border-gray-700 pt-3">500GB</p>
-                <p className="border-t border-gray-700 pt-3">Limited</p>
-                <p className="border-t border-gray-700 pt-3 flex justify-center">
-                  <Check className="w-5 h-5 text-green-400" />
-                </p>
-                <p className="border-t border-gray-700 pt-3">
-                  10 Memories: Save 200GB
-                </p>
-                <p className="border-t border-gray-700 pt-3">500</p>
-                <p className="border-t border-gray-700 pt-3">
-                  Custom Subdomain
-                </p>
-              </div>
-            </div>
-
-            {/* ✅ Pilot */}
-            <div className="py-8 w-1/6 border-r">
-              <h4 className="font-semibold text-gray-900">PILOT</h4>
-              <p className="text-xl font-bold mt-2">$31 Per Month</p>
-              <p className="text-gray-500 text-sm">Billed: Every Year</p>
-              <Button className="mt-4 rounded-full px-6 bg-gray-900 text-white">
-                Select
-              </Button>
-              <div className="mt-8 space-y-[38px] text-gray-700 text-sm">
-                <p className="border-t pt-3">1000GB</p>
-                <p className="border-t pt-3">Limited</p>
-                <p className="border-t pt-3 flex justify-center">
-                  <Check className="w-5 h-5 text-green-500" />
-                </p>
-                <p className="border-t pt-3">15 Memories: Save 300GB</p>
-                <p className="border-t pt-3">1000</p>
-                <p className="border-t pt-3">Customisable</p>
-              </div>
-            </div>
-
-            {/* ✅ Astronaut */}
-            <div className="py-8 w-1/6">
-              <h4 className="font-semibold text-gray-900">ASTRONAUT</h4>
-              <p className="text-xl font-bold mt-2">Contact Us</p>
-              <p className="text-gray-500 text-sm">Billed: Every Year</p>
-              <Button variant="outline" className="mt-4 rounded-full px-6">
-                Contact Us
-              </Button>
-              <div className="mt-8 space-y-[38px] text-gray-700 text-sm">
-                <p className="border-t pt-3">Customisable</p>
-                <p className="border-t pt-3">Limited</p>
-                <p className="border-t pt-3 flex justify-center">
-                  <Check className="w-5 h-5 text-green-500" />
-                </p>
-                <p className="border-t pt-3">Customisable</p>
-                <p className="border-t pt-3">Customisable</p>
-                <p className="border-t pt-3">Customisable</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 

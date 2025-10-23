@@ -17,7 +17,7 @@ export default function Howwork() {
 
         {/* Steps Section */}
         {/* Steps Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 rounded-2xl overflow-hidden border border-gray-200 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 rounded overflow-hidden border border-gray-200 ">
           {/* Step 1 */}
           <div
             className="flex flex-col items-center justify-center py-8 px-4"
@@ -66,13 +66,13 @@ export default function Howwork() {
         </div>
 
         {/* Mockup Placeholder / Image */}
-        <div className="relative rounded-3xl overflow-hidden shadow-xl border border-gray-100 bg-[#F9FAFB] flex items-center justify-center py-20">
-          <div className="text-center">
+        <div className="relative rounded overflow-hidden shadow-xl border border-gray-100 bg-[#F9FAFB] flex items-center justify-center ">
+          <div className="text-center w-3/5">
             <Image
               src="/dashbored.png"
               alt="Dashboard Mockup"
               width={1000}
-              height={600}
+              height={1000}
               className="w-full h-auto object-contain"
             />
           </div>
