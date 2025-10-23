@@ -10,7 +10,7 @@ export default function Features() {
   return (
     <section className="w-full bg-white text-gray-800">
       {/* HERO SECTION */}
-      <div className="max-w-6xl mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 items-center">
+      <div className="max-w-6xl lg:max-w-[87%] mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 lg:gap-96 items-center">
         {/* LEFT SIDE */}
         <div>
           <p className="text-sm font-medium tracking-wide text-gray-500 mb-2">
@@ -62,7 +62,7 @@ export default function Features() {
       </div>
 
       {/* FEATURES GRID */}
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-6 pb-20">
+      <div className="max-w-6xl lg:max-w-[87%] mx-auto grid md:grid-cols-3 gap-8 px-6 pb-20">
         <Card className="border-none shadow-none">
           <CardContent className="p-0">
             <Image
@@ -123,7 +123,7 @@ export default function Features() {
       </div>
 
       {/* COLLABORATIVE SECTION */}
-      <div className="relative max-w-6xl mx-auto px-6 pb-24 grid md:grid-cols-2 gap-12 items-center">
+      <div className="relative max-w-6xl lg:max-w-[87%] mx-auto px-6 pb-24 grid md:grid-cols-2 gap-12 items-center">
         {/* LEFT SIDE - IMAGE + BACKGROUND */}
         <div className="relative flex justify-center md:justify-start">
           {/* SVG Blob Background */}

@@ -30,13 +30,15 @@ export default function Hero() {
 
   return (
     <section className="relative overflow-hidden pt-32 pb-28 text-center bg-[linear-gradient(180deg,_#FFDCE3_0%,_#FFFFFF_40%,_#E2E2FF_80%,_#FFFFFF_100%)]">
+      {/* Image row — stacked, rounded, overlapping exactly like design */}
+
       {/* Background vector glows */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute w-[1800px] h-[900px] bg-[radial-gradient(ellipse_at_top_left,_#FFDCE3_0%,_transparent_70%)] opacity-40 top-[-200px] left-[-400px] blur-3xl"></div>
-        <div className="absolute w-[1600px] h-[800px] bg-[radial-gradient(ellipse_at_bottom_right,_#E2E2FF_0%,_transparent_70%)] opacity-40 bottom-[-200px] right-[-400px] blur-3xl"></div>
+        <div className="absolute w-[2000px] h-[900px] bg-[radial-gradient(ellipse_at_top_left,_#FFDCE3_0%,_transparent_70%)] opacity-40 top-[-200px] left-[-400px] blur-3xl"></div>
+        <div className="absolute w-[2000px] h-[800px] bg-[radial-gradient(ellipse_at_bottom_right,_#E2E2FF_0%,_transparent_70%)] opacity-40 bottom-[-200px] right-[-400px] blur-3xl"></div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="lg:max-w-[87%] max-w-6xl mx-auto px-6">
         {/* Top Badge */}
         <div className="inline-flex items-center gap-2 bg-white border border-gray-200 px-4 py-1.5 rounded-full text-sm font-medium mb-6 shadow-sm">
           <span className="text-indigo-600">✨</span>
@@ -47,7 +49,35 @@ export default function Hero() {
         <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight tracking-tight">
           Organize. <span className="text-indigo-600">Share.</span> Collaborate.
         </h1>
-
+        <div className="relative flex justify-center items-center mt-10 mb-10">
+          <div className="flex justify-center items-center -space-x-16 md:-space-x-12">
+            {[
+              { src: "/Rectangle 34624108.png", rotate: "-8deg", z: "z-[1]" },
+              { src: "/Rectangle 34624107.png", rotate: "-4deg", z: "z-[2]" },
+              { src: "/Rectangle 34624106.png", rotate: "0deg", z: "z-[3]" },
+              { src: "/Rectangle 34624105.png", rotate: "3deg", z: "z-[3]" },
+              { src: "/Rectangle 34624102.png", rotate: "6deg", z: "z-[2]" },
+              { src: "/Rectangle 34624103.png", rotate: "9deg", z: "z-[1]" },
+              { src: "/Rectangle 34624104.png", rotate: "9deg", z: "z-[1]" },
+            ].map((img, idx) => (
+              <div
+                key={idx}
+                className={`relative w-36 h-52 md:w-48 md:h-56 overflow-hidden rounded-3xl gap-12 transform ${img.z} transition-all duration-300 hover:scale-105 hover:z-[5]`}
+                style={{
+                  transform: `rotate(${img.rotate})`,
+                }}
+              >
+                <Image
+                  src={img.src}
+                  alt={`photo-${idx}`}
+                  fill
+                  className="object-cover object-center"
+                  priority
+                />
+              </div>
+            ))}
+          </div>
+        </div>
         {/* Subtitle */}
         <p className="text-gray-600 max-w-2xl mx-auto mb-10 text-lg leading-relaxed">
           Use Face Recognition to deliver photos faster, build custom galleries,

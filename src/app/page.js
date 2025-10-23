@@ -1,5 +1,7 @@
 import Hero from "../components/Hero";
 import Features from "../components/Features";
+import Gallery from "../components/Gallery";
+import Ourusers from "../components/Ourusers";
 // import Gallery from "@/components/Gallery";
 // import Stats from "@/components/Stats";
 // import Features from "@/components/Features";
@@ -12,12 +14,8 @@ export default function HomePage() {
     <>
       <Hero />
       <Features />
-      {/* <Gallery />
-      <Stats />
-     
-      <Testimonials />
-      <Pricing />
-      <Contact /> */}
+      <Gallery />
+      <Ourusers />
     </>
   );
 }
