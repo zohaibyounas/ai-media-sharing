@@ -29,14 +29,15 @@ export default function Hero() {
   ];
 
   return (
-    <section
-      className="relative overflow-hidden pt-32 pb-28 text-center"
-      style={{
-        background: "linear-gradient(180deg, #E2E2FF 75.7%, #FFFFFF 100%)",
-      }}
-    >
+    <section className="relative overflow-hidden pt-32 pb-28 text-center">
       {/* Background glow layers */}
       <div className="absolute inset-0 -z-10">
+        <Image
+          src="/Rectangle.png"
+          alt="Background glow"
+          fill
+          className="object-cover object-center"
+        />
         {/* Soft pink glow (top-left) */}
         <div className="absolute w-[1800px] h-[900px] bg-[radial-gradient(ellipse_at_top_left,_#FFDCE3_0%,_transparent_70%)] opacity-60 top-[-250px] left-[-400px] blur-3xl"></div>
 
