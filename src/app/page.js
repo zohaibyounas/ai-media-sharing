@@ -2,6 +2,9 @@ import Hero from "../components/Hero";
 import Features from "../components/Features";
 import Gallery from "../components/Gallery";
 import Ourusers from "../components/Ourusers";
+import Howwork from "../components/Howwork";
+import PerfectPlan from "@/components/Perfect_plan";
+import Workflow from "@/components/Workflow";
 // import Gallery from "@/components/Gallery";
 // import Stats from "@/components/Stats";
 // import Features from "@/components/Features";
@@ -16,6 +19,9 @@ export default function HomePage() {
       <Features />
       <Gallery />
       <Ourusers />
+      <Howwork />
+      <PerfectPlan />
+      <Workflow />
     </>
   );
 }
