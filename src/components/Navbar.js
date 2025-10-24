@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation"; // ✅ import router for navigation
 import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const router = useRouter(); // ✅ initialize router
 
   const links = [
     { name: "How it works", href: "#" },
@@ -16,8 +18,13 @@ export default function Navbar() {
     { name: "Examples", href: "#" },
   ];
 
+  // ✅ handle login click
+  const handleLogin = () => {
+    router.push("/login");
+  };
+
   return (
-    <nav className="fixed top-0 left-0 w-full z-50 bg-[#E2E2FF]  backdrop-blur-md border-b border-gray-200">
+    <nav className="fixed top-0 left-0 w-full z-50 bg-[#E2E2FF] backdrop-blur-md border-b border-gray-200">
       <div className="max-w-7xl lg:max-w-[87%] mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
         <div className="font-semibold text-gray-900 text-lg">Logohere</div>
@@ -35,9 +42,12 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Login Button */}
+        {/* ✅ Login Button */}
         <div className="hidden lg:block">
-          <button className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:bg-black transition-colors">
+          <button
+            onClick={handleLogin}
+            className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:bg-black transition-colors cursor-pointer"
+          >
             Login
           </button>
         </div>
@@ -62,7 +72,10 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
-          <button className="mt-3 w-full bg-gray-900 text-white py-2 rounded-lg">
+          <button
+            onClick={handleLogin}
+            className="mt-3 w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-black transition-colors"
+          >
             Login
           </button>
         </div>

@@ -116,7 +116,7 @@ export default function Hero() {
         {/* Stats Section - Fixed with exact text from image */}
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 ">
           {/* Stats Card */}
-          <div className="bg-gradient-to-r from-[#F8F3FF] to-[#F4F8FF] rounded-e-full py-10 px-8 flex flex-col md:flex-row justify-center items-center gap-8 shadow-md border border-gray-100">
+          <div className="bg-gradient-to-r from-[#FFFFFF4D] to-[#FFFFFF4D] rounded-e-full py-10 px-8 flex flex-col md:flex-row justify-center items-center gap-8 shadow-md border border-gray-100">
             <div className="flex items-center gap-4 w-72 pl-4 bg-[#FFDCE3] rounded-full">
               <div className="flex -space-x-4">
                 {["/img1.jpg", "/img-2.jpg", "/img3.jpg"].map((src, i) => (
@@ -158,7 +158,7 @@ export default function Hero() {
           </div>
 
           {/* Trust Card */}
-          <div className="bg-gradient-to-r from-[#F8F3FF] to-[#F4F8FF] rounded-l-full py-10 px-8 flex items-center justify-center shadow-md border border-gray-100">
+          <div className="bg-gradient-to-r from-[#FFFFFF4D] to-[#FFFFFF4D] rounded-l-full py-10 px-8 flex items-center justify-center shadow-md border border-gray-100">
             <div className="text-center max-w-sm">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 Trusted by Millions
