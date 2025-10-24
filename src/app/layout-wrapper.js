@@ -11,7 +11,10 @@ export default function LayoutWrapper({ children }) {
   const hideLayout =
     pathname === "/login" ||
     pathname === "/register" ||
-    pathname === "/forgot-password";
+    pathname === "/forgot-password" ||
+    pathname === "/dashboard" ||
+    pathname === "/dashboard/create-event" ||
+    pathname === "/dashboard/my-events";
 
   return (
     <>

@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function RegisterPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="flex flex-col lg:flex-row w-full max-w-6xl lg:max-w-[70%] overflow-hidden rounded-3xl bg-white shadow-md">
+      <div className="flex flex-col lg:flex-row w-full max-w-6xl lg:max-w-[65%] overflow-hidden rounded-3xl bg-white shadow-md">
         {/* Left Illustration */}
         <div className="w-full lg:w-[45%] bg-white flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-100 p-8">
           <Image
