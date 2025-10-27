@@ -21,7 +21,7 @@ export default function RegisterPage() {
     setMessage("");
 
     try {
-      const res = await fetch("https://api.fotoshareai.com/auth/register/", {
+      const res = await fetch("https://api.fotoshareai.com/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
