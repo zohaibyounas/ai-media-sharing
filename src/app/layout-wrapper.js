@@ -14,7 +14,8 @@ export default function LayoutWrapper({ children }) {
     pathname === "/forgot-password" ||
     pathname === "/dashboard" ||
     pathname === "/dashboard/create-event" ||
-    pathname === "/dashboard/my-events";
+    pathname === "/dashboard/my-events" ||
+    pathname.startsWith("/dashboard/events/");
 
   return (
     <>

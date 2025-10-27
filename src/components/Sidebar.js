@@ -1,4 +1,3 @@
-// components/Sidebar.js
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -23,6 +22,11 @@ const links = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+
+  // Hide sidebar only on /dashboard/events/1
+  if (pathname === "/dashboard/events/1") {
+    return null;
+  }
 
   return (
     <aside className="w-60 bg-white border-r border-gray-200 flex flex-col justify-between">
