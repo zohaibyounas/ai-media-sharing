@@ -1,13 +1,95 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 export default function RegisterPage() {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  // ✅ Normal registration
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const res = await fetch("https://api.fotoshareai.com/auth/register/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          name,
+          password,
+          acceptTerms: true,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Registration failed");
+
+      setMessage("✅ Registration successful! You can now log in.");
+      setEmail("");
+      setName("");
+      setPassword("");
+    } catch (err) {
+      setMessage(`❌ ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Google Sign-Up handler
+  const handleGoogleSignUp = () => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id:
+        "656438575097-1o2lffjt39mbqhjg5fqmnon3iun7aj37.apps.googleusercontent.com", // 🔴 Replace with your Google Client ID
+      callback: async (response) => {
+        try {
+          const idToken = response.credential;
+
+          const res = await fetch(
+            "https://api.fotoshareai.com/auth/oauth/google/token",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ idToken }),
+            }
+          );
+          console.log(res);
+          const data = await res.json();
+          console.log(data);
+          if (!res.ok) throw new Error(data.message || "Google Sign-up failed");
+
+          console.log("✅ Google user:", data);
+          setMessage(`✅ Welcome ${data.user?.username || "Google user"}!`);
+        } catch (err) {
+          console.error(err);
+          setMessage(`❌ ${err.message}`);
+        }
+      },
+    });
+
+    google.accounts.id.prompt(); // opens Google popup
+  };
+
+  // ✅ Load Google script
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="flex flex-col lg:flex-row w-full max-w-6xl lg:max-w-[65%] overflow-hidden rounded-3xl bg-white shadow-md">
@@ -23,7 +105,7 @@ export default function RegisterPage() {
           />
         </div>
 
-        {/* Right Side Form */}
+        {/* Right Form */}
         <div className="w-full lg:w-[55%] flex flex-col justify-center px-6 sm:px-10 py-10">
           <h2 className="text-2xl font-semibold text-gray-800 mb-1 text-center lg:text-left">
             Register Account
@@ -32,8 +114,7 @@ export default function RegisterPage() {
             Get your free account now
           </p>
 
-          <form className="space-y-4">
-            {/* Email */}
+          <form onSubmit={handleRegister} className="space-y-4">
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Email
@@ -42,10 +123,12 @@ export default function RegisterPage() {
                 type="email"
                 placeholder="Enter email"
                 className="h-10 text-sm"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
-            {/* Username */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Username
@@ -54,22 +137,26 @@ export default function RegisterPage() {
                 type="text"
                 placeholder="Enter username"
                 className="h-10 text-sm"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Password
               </label>
               <Input
                 type="password"
-                placeholder="Enter Password"
+                placeholder="Enter password"
                 className="h-10 text-sm"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
 
-            {/* Terms of Use */}
             <p className="text-xs text-gray-500 mt-1">
               By registering you agree to the Photomo{" "}
               <a
@@ -80,12 +167,22 @@ export default function RegisterPage() {
               </a>
             </p>
 
-            {/* Register Button */}
+            {message && (
+              <p
+                className={`text-sm ${
+                  message.includes("✅") ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {message}
+              </p>
+            )}
+
             <Button
               type="submit"
               className="w-full bg-[#0b1222] hover:bg-[#1a243d] text-white mt-2"
+              disabled={loading}
             >
-              Register
+              {loading ? "Registering..." : "Register"}
             </Button>
           </form>
 
@@ -97,9 +194,10 @@ export default function RegisterPage() {
             </span>
           </div>
 
-          {/* Google Sign Up */}
+          {/* ✅ Google Sign-Up (Kept & Functional) */}
           <Button
             variant="outline"
+            onClick={handleGoogleSignUp}
             className="w-full flex items-center justify-center space-x-2 border-gray-200"
           >
             <Image
@@ -111,7 +209,6 @@ export default function RegisterPage() {
             <span className="text-sm text-gray-700">Sign up with Google</span>
           </Button>
 
-          {/* Already Have Account */}
           <p className="text-center text-xs text-gray-500 mt-6">
             Already have an account?{" "}
             <Link
@@ -122,7 +219,6 @@ export default function RegisterPage() {
             </Link>
           </p>
 
-          {/* Footer Links */}
           <div className="flex justify-center gap-1 mt-4 text-[11px] text-gray-400">
             <Link href="#" className="hover:underline">
               Privacy Policy
