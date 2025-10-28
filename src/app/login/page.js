@@ -28,16 +28,21 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
+      // Handle unauthorized response
       if (!res.ok) {
         const errData = await res.json();
-        throw new Error(errData.message || "Login failed");
+        throw new Error(errData.message || "Invalid email or password");
       }
 
       const data = await res.json();
 
-      // Optionally store token in localStorage if backend returns one
-      if (data.token) {
-        localStorage.setItem("token", data.token);
+      // ✅ Store token automatically (works on Vercel too)
+      const token = data.access_token || data.token || data.accessToken || null;
+
+      if (token) {
+        localStorage.setItem("access_token", token);
+      } else {
+        console.warn("⚠️ No token found in API response:", data);
       }
 
       // ✅ Redirect to dashboard

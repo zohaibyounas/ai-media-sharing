@@ -24,7 +24,11 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   // Hide sidebar only on /dashboard/events/1
-  if (pathname === "/dashboard/events/1") {
+  if (
+    pathname === "/dashboard/walima-ceremony" ||
+    pathname === "/dashboard/summer-gala" ||
+    pathname === "/dashboard/share-links"
+  ) {
     return null;
   }
 

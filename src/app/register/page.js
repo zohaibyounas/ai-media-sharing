@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // ✅ to redirect after register
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,6 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 
 export default function RegisterPage() {
+  const router = useRouter(); // ✅ useRouter hook
+
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -32,69 +35,91 @@ export default function RegisterPage() {
         }),
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Registration failed");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Registration failed");
+      }
 
-      setMessage("✅ Registration successful! You can now log in.");
+      setMessage("✅ Registration successful! Redirecting to login...");
       setEmail("");
       setName("");
       setPassword("");
+
+      // ✅ Redirect after short delay
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
     } catch (err) {
-      setMessage(`❌ ${err.message}`);
+      setMessage(`❌ ${err.message || "Network error. Please try again."}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // ✅ Google Sign-Up handler
-  const handleGoogleSignUp = () => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id:
-        "656438575097-1o2lffjt39mbqhjg5fqmnon3iun7aj37.apps.googleusercontent.com", // 🔴 Replace with your Google Client ID
-      callback: async (response) => {
-        try {
-          const idToken = response.credential;
-
-          const res = await fetch(
-            "https://api.fotoshareai.com/auth/oauth/google/token",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ idToken }),
-            }
-          );
-          console.log(res);
-          const data = await res.json();
-          console.log(data);
-          if (!res.ok) throw new Error(data.message || "Google Sign-up failed");
-
-          console.log("✅ Google user:", data);
-          setMessage(`✅ Welcome ${data.user?.username || "Google user"}!`);
-        } catch (err) {
-          console.error(err);
-          setMessage(`❌ ${err.message}`);
-        }
-      },
-    });
-
-    google.accounts.id.prompt(); // opens Google popup
-  };
-
-  // ✅ Load Google script
+  // ✅ Load Google script (only once)
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
+    const loadGoogle = () => {
+      if (!window.google || window.googleInitialized) return;
+      window.googleInitialized = true;
+
+      google.accounts.id.initialize({
+        client_id:
+          "656438575097-1o2lffjt39mbqhjg5fqmnon3iun7aj37.apps.googleusercontent.com",
+        callback: async (response) => {
+          try {
+            const idToken = response.credential;
+
+            const res = await fetch(
+              "https://api.fotoshareai.com/auth/oauth/google/token",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ idToken }),
+              }
+            );
+
+            const data = await res.json();
+            if (!res.ok)
+              throw new Error(data.message || "Google Sign-up failed");
+
+            console.log("✅ Google user:", data);
+            setMessage(`✅ Welcome ${data.user?.username || "Google user"}!`);
+          } catch (err) {
+            console.error(err);
+            setMessage(`❌ ${err.message}`);
+          }
+        },
+      });
+    };
+
+    // Load only once
+    if (!document.getElementById("google-client-script")) {
+      const script = document.createElement("script");
+      script.id = "google-client-script";
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = loadGoogle;
+      document.body.appendChild(script);
+    } else {
+      loadGoogle();
+    }
   }, []);
+
+  // ✅ Handle Google button
+  const handleGoogleSignUp = () => {
+    if (window.google && window.googleInitialized) {
+      google.accounts.id.prompt();
+    } else {
+      setMessage("⚠️ Please wait — Google Sign-In is still loading.");
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="flex flex-col lg:flex-row w-full max-w-6xl lg:max-w-[65%] overflow-hidden rounded-3xl bg-white shadow-md">
-        {/* Left Illustration */}
-        <div className="w-full lg:w-[45%] bg-white flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-100 p-8">
+        {/* Left Image */}
+        <div className="w-full lg:w-[45%] flex items-center justify-center border-b lg:border-b-0 lg:border-r border-gray-100 p-8">
           <Image
             src="/login.png"
             alt="Register illustration"
@@ -157,16 +182,6 @@ export default function RegisterPage() {
               />
             </div>
 
-            <p className="text-xs text-gray-500 mt-1">
-              By registering you agree to the Photomo{" "}
-              <a
-                href="#"
-                className="text-[#0b1222] hover:underline font-medium"
-              >
-                Terms of Use
-              </a>
-            </p>
-
             {message && (
               <p
                 className={`text-sm ${
@@ -186,7 +201,6 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          {/* Divider */}
           <div className="relative my-6">
             <Separator />
             <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white px-2 text-xs text-gray-500">
@@ -194,7 +208,6 @@ export default function RegisterPage() {
             </span>
           </div>
 
-          {/* ✅ Google Sign-Up (Kept & Functional) */}
           <Button
             variant="outline"
             onClick={handleGoogleSignUp}
@@ -208,26 +221,6 @@ export default function RegisterPage() {
             />
             <span className="text-sm text-gray-700">Sign up with Google</span>
           </Button>
-
-          <p className="text-center text-xs text-gray-500 mt-6">
-            Already have an account?{" "}
-            <Link
-              href="/login"
-              className="text-[#0b1222] font-medium hover:underline"
-            >
-              Login
-            </Link>
-          </p>
-
-          <div className="flex justify-center gap-1 mt-4 text-[11px] text-gray-400">
-            <Link href="#" className="hover:underline">
-              Privacy Policy
-            </Link>
-            <span>&amp;</span>
-            <Link href="#" className="hover:underline">
-              Refund Policy
-            </Link>
-          </div>
         </div>
       </div>
     </div>
