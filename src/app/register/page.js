@@ -108,10 +108,26 @@ export default function RegisterPage() {
 
   // ✅ Handle Google button
   const handleGoogleSignUp = () => {
-    if (window.google && window.googleInitialized) {
-      google.accounts.id.prompt();
-    } else {
-      setMessage("⚠️ Please wait — Google Sign-In is still loading.");
+    if (!window.google || !window.googleInitialized) {
+      setMessage("⚠️ Google Sign-In not ready yet. Please try again shortly.");
+      return;
+    }
+
+    try {
+      google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          console.warn(
+            "Google Sign-In prompt dismissed:",
+            notification.getMomentType()
+          );
+          setMessage(
+            "⚠️ Google Sign-In was closed or blocked. Please try again."
+          );
+        }
+      });
+    } catch (err) {
+      console.error("Google Sign-In error:", err);
+      setMessage("❌ Google Sign-In failed. Please refresh and try again.");
     }
   };
 
