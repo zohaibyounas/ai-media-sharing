@@ -65,25 +65,25 @@ export default function RegisterPage() {
       google.accounts.id.initialize({
         client_id:
           "656438575097-1o2lffjt39mbqhjg5fqmnon3iun7aj37.apps.googleusercontent.com",
-        callback: async (response) => {
+        callback: async (googleResponse) => {
           try {
-            const idToken = response.credential;
+            const idToken = googleResponse.credential;
             console.log("Google ID Token:", idToken);
 
-            const response = await fetch("/api/auth/google", {
+            const apiRes = await fetch("/api/auth/google", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ idToken }),
             });
 
-            const data = await response.json();
+            const data = await apiRes.json();
             console.log(data);
 
-            if (!res.ok)
+            if (!apiRes.ok)
               throw new Error(data.message || "Google Sign-up failed");
 
             console.log("✅ Google user:", data);
-            setMessage(`✅ Welcome ${data.user?.username || "Google user"}!`);
+            setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
           } catch (err) {
             console.error("Google Sign-up error:", err);
             setMessage(`❌ ${err.message}`);
