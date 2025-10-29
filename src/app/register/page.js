@@ -77,13 +77,23 @@ export default function RegisterPage() {
             });
 
             const data = await apiRes.json();
-            console.log(data);
+            console.log("Google Auth Response:", data);
 
             if (!apiRes.ok)
               throw new Error(data.message || "Google Sign-up failed");
 
-            console.log("✅ Google user:", data);
+            // ✅ Success: store user info or token if needed
             setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
+
+            // Optionally save token in localStorage
+            if (data.token) {
+              localStorage.setItem("authToken", data.token);
+            }
+
+            // ✅ Redirect to dashboard after 1s
+            setTimeout(() => {
+              router.push("/dashboard");
+            }, 1000);
           } catch (err) {
             console.error("Google Sign-up error:", err);
             setMessage(`❌ ${err.message}`);
