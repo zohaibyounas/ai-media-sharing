@@ -2,34 +2,31 @@
 
 import { Bell, Settings, Sun, Moon } from "lucide-react";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Topbar() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [user, setUser] = useState(null);
+  // ✅ Load user directly from localStorage when component mounts
+  const [user] = useState(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("user");
+      return stored ? JSON.parse(stored) : null;
+    }
+    return null;
+  });
 
+  const [darkMode, setDarkMode] = useState(false);
   const used = 25;
   const total = 100;
   const progress = (used / total) * 100;
 
-  // ✅ Load user data from localStorage when component mounts
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setTimeout(() => {
-        setUser(JSON.parse(storedUser));
-      }, 0);
-    }
-  }, []);
-
   return (
     <header className="flex items-center justify-between px-6 py-2 bg-white border-b shadow-sm sticky top-0 z-50">
-      {/* LEFT SIDE (optional space) */}
+      {/* LEFT SIDE */}
       <div></div>
 
       {/* RIGHT SIDE */}
       <div className="flex items-center gap-5">
-        {/* Gallery Info */}
+        {/* Usage Info */}
         <div className="flex flex-col items-end">
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-md bg-[#F4F4F5] flex items-center justify-center">
@@ -55,7 +52,7 @@ export default function Topbar() {
           </div>
         </div>
 
-        {/* Theme Toggle */}
+        {/* Theme toggle */}
         <button
           onClick={() => setDarkMode(!darkMode)}
           className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition"
@@ -78,18 +75,25 @@ export default function Topbar() {
           <Settings size={18} className="text-gray-700" />
         </button>
 
-        {/* User Avatar + Name */}
-        <div className="flex items-center gap-2">
-          <div className="w-9 h-9 relative overflow-hidden rounded-full border border-gray-200">
-            <Image
-              src={user?.picture || "/topbar.jpg"}
-              alt="avatar"
-              fill
-              className="object-cover rounded-full"
-            />
+        {/* ✅ Dynamic User Avatar and Name */}
+        {user ? (
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 relative overflow-hidden rounded-full border border-gray-200">
+              <Image
+                src={user.picture || "/topbar.jpg"}
+                alt="User avatar"
+                fill
+                className="object-cover rounded-full"
+              />
+            </div>
+            <span className="text-sm font-medium">{user.name}</span>
           </div>
-          <span className="text-sm font-medium">{user?.name || "Guest"}</span>
-        </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            <div className="w-9 h-9 rounded-full bg-gray-200"></div>
+            <span className="text-sm text-gray-500">Guest</span>
+          </div>
+        )}
       </div>
     </header>
   );
