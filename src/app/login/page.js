@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,91 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
 
+  // ✅ Google Sign-In setup
+  useEffect(() => {
+    const loadGoogle = () => {
+      if (!window.google || window.googleInitialized) return;
+      window.googleInitialized = true;
+
+      google.accounts.id.initialize({
+        client_id:
+          "656438575097-1o2lffjt39mbqhjg5fqmnon3iun7aj37.apps.googleusercontent.com",
+        callback: async (googleResponse) => {
+          try {
+            const idToken = googleResponse.credential;
+            console.log("Google ID Token:", idToken);
+
+            const apiRes = await fetch("/api/auth/google", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ idToken }),
+            });
+
+            const data = await apiRes.json();
+            console.log("Google Auth Response:", data);
+
+            if (!apiRes.ok)
+              throw new Error(data.message || "Google Sign-in failed");
+
+            // ✅ Store user in localStorage
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            // Optionally store backend token
+            if (data.token) {
+              localStorage.setItem("authToken", data.token);
+            }
+
+            setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
+
+            // Redirect to dashboard
+            setTimeout(() => router.push("/dashboard"), 1000);
+          } catch (err) {
+            console.error("Google Sign-in error:", err);
+            setMessage(`❌ ${err.message}`);
+          }
+        },
+      });
+    };
+
+    // ✅ Load Google script once
+    if (!document.getElementById("google-client-script")) {
+      const script = document.createElement("script");
+      script.id = "google-client-script";
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.defer = true;
+      script.onload = loadGoogle;
+      document.body.appendChild(script);
+    } else {
+      loadGoogle();
+    }
+  }, [router]);
+
+  // ✅ Trigger Google popup
+  const handleGoogleSignIn = () => {
+    if (!window.google || !window.googleInitialized) {
+      setMessage("⚠️ Google Sign-In not ready yet. Please try again shortly.");
+      return;
+    }
+
+    try {
+      google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          console.warn("Google Sign-In prompt dismissed:", notification);
+          setMessage(
+            "⚠️ Google Sign-In was closed or blocked. Please try again."
+          );
+        }
+      });
+    } catch (err) {
+      console.error("Google Sign-In error:", err);
+      setMessage("❌ Google Sign-In failed. Please refresh and try again.");
+    }
+  };
+
+  // ✅ Normal email login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -28,24 +112,17 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      // Handle unauthorized response
       if (!res.ok) {
         const errData = await res.json();
         throw new Error(errData.message || "Invalid email or password");
       }
 
       const data = await res.json();
-
-      // ✅ Store token automatically (works on Vercel too)
       const token = data.access_token || data.token || data.accessToken || null;
 
-      if (token) {
-        localStorage.setItem("access_token", token);
-      } else {
-        console.warn("⚠️ No token found in API response:", data);
-      }
+      if (token) localStorage.setItem("access_token", token);
+      else console.warn("⚠️ No token found in API response:", data);
 
-      // ✅ Redirect to dashboard
       router.push("/dashboard");
     } catch (err) {
       setError(err.message);
@@ -71,7 +148,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Right Side Form */}
+        {/* Right Form */}
         <div className="flex w-full lg:w-[55%] flex-col justify-center px-6 sm:px-10 md:px-14 py-10 min-h-[400px]">
           <div className="text-center lg:text-left mb-6">
             <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-1">
@@ -83,7 +160,6 @@ export default function LoginPage() {
           </div>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
-            {/* Email */}
             <div>
               <label className="text-sm font-medium text-gray-700 mb-1 block">
                 Email
@@ -98,7 +174,6 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-sm font-medium text-gray-700">
@@ -118,7 +193,6 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Remember Me */}
             <div className="flex items-center space-x-2">
               <Checkbox id="remember" />
               <label
@@ -129,12 +203,10 @@ export default function LoginPage() {
               </label>
             </div>
 
-            {/* Error Message */}
             {error && (
               <p className="text-red-500 text-sm text-center">{error}</p>
             )}
 
-            {/* Login Button */}
             <Button
               type="submit"
               disabled={loading}
@@ -152,9 +224,10 @@ export default function LoginPage() {
             </span>
           </div>
 
-          {/* Google Sign In */}
+          {/* Google Sign-In */}
           <Button
             variant="outline"
+            onClick={handleGoogleSignIn}
             className="w-full flex items-center justify-center space-x-2 border-gray-200"
           >
             <Image
@@ -163,12 +236,15 @@ export default function LoginPage() {
               width={18}
               height={18}
             />
-            <span className="text-sm md:text-base text-gray-700">
+            <span className="text-sm md:text-base text-gray-700 cursor-pointer">
               Sign in with Google
             </span>
           </Button>
 
-          {/* Register Link */}
+          {message && (
+            <p className="text-center text-xs text-gray-500 mt-2">{message}</p>
+          )}
+
           <p className="text-center text-xs sm:text-sm text-gray-500 mt-6">
             Don&apos;t have an account?{" "}
             <Link
@@ -179,7 +255,6 @@ export default function LoginPage() {
             </Link>
           </p>
 
-          {/* Footer Links */}
           <div className="flex justify-center flex-wrap gap-1 mt-4 text-[11px] sm:text-xs text-gray-400">
             <a href="#" className="hover:underline">
               Privacy Policy

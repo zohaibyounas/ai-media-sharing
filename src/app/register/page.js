@@ -246,7 +246,9 @@ export default function RegisterPage() {
               width={18}
               height={18}
             />
-            <span className="text-sm text-gray-700">Sign up with Google</span>
+            <span className="text-sm text-gray-700 cursor-pointer">
+              Sign up with Google
+            </span>
           </Button>
         </div>
       </div>
