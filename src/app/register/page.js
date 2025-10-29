@@ -81,6 +81,7 @@ export default function RegisterPage() {
 
             if (!apiRes.ok)
               throw new Error(data.message || "Google Sign-up failed");
+            localStorage.setItem("user", JSON.stringify(data.user));
 
             // ✅ Success: store user info or token if needed
             setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
