@@ -70,18 +70,14 @@ export default function RegisterPage() {
             const idToken = response.credential;
             console.log("Google ID Token:", idToken);
 
-            const res = await fetch(
-              "https://api.fotoshareai.com/auth/oauth/google/token",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ idToken }),
-              }
-            );
+            const response = await fetch("/api/auth/google", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ idToken }),
+            });
 
-            const data = await res.json().catch(() => ({}));
-            console.log("Backend status:", res.status);
-            console.log("Backend response:", data);
+            const data = await response.json();
+            console.log(data);
 
             if (!res.ok)
               throw new Error(data.message || "Google Sign-up failed");
