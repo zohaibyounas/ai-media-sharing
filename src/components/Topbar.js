@@ -2,26 +2,28 @@
 
 import { Bell, Settings, Sun, Moon } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Topbar() {
-  // ✅ Load user directly from localStorage when component mounts
-  const [user] = useState(() => {
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("user");
-      return stored ? JSON.parse(stored) : null;
-    }
-    return null;
-  });
-
+  const [user, setUser] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const used = 25;
   const total = 100;
   const progress = (used / total) * 100;
 
+  // ✅ Load user info (works for both Google + normal login)
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setTimeout(() => {
+        setUser(JSON.parse(storedUser));
+      }, 0);
+    }
+  }, []);
+
   return (
     <header className="flex items-center justify-between px-6 py-2 bg-white border-b shadow-sm sticky top-0 z-50">
-      {/* LEFT SIDE */}
+      {/* LEFT SIDE (You can place logo or title here later if needed) */}
       <div></div>
 
       {/* RIGHT SIDE */}
@@ -79,14 +81,16 @@ export default function Topbar() {
         {user ? (
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 relative overflow-hidden rounded-full border border-gray-200">
-              <Image
+              <img
                 src={user.picture || "/topbar.jpg"}
                 alt="User avatar"
                 fill
                 className="object-cover rounded-full"
               />
             </div>
-            <span className="text-sm font-medium">{user.name}</span>
+            <span className="text-sm font-medium text-gray-800 truncate max-w-[120px]">
+              {user.name || user.email}
+            </span>
           </div>
         ) : (
           <div className="flex items-center gap-2">

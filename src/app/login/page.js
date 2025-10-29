@@ -29,8 +29,6 @@ export default function LoginPage() {
         callback: async (googleResponse) => {
           try {
             const idToken = googleResponse.credential;
-            console.log("Google ID Token:", idToken);
-
             const apiRes = await fetch("/api/auth/google", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -38,32 +36,24 @@ export default function LoginPage() {
             });
 
             const data = await apiRes.json();
-            console.log("Google Auth Response:", data);
 
             if (!apiRes.ok)
               throw new Error(data.message || "Google Sign-in failed");
 
-            // ✅ Store user in localStorage
+            // ✅ Store user info
             localStorage.setItem("user", JSON.stringify(data.user));
-
-            // Optionally store backend token
-            if (data.token) {
-              localStorage.setItem("authToken", data.token);
-            }
+            if (data.token) localStorage.setItem("access_token", data.token);
 
             setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
-
-            // Redirect to dashboard
             setTimeout(() => router.push("/dashboard"), 1000);
           } catch (err) {
-            console.error("Google Sign-in error:", err);
             setMessage(`❌ ${err.message}`);
           }
         },
       });
     };
 
-    // ✅ Load Google script once
+    // Load Google script once
     if (!document.getElementById("google-client-script")) {
       const script = document.createElement("script");
       script.id = "google-client-script";
@@ -83,23 +73,10 @@ export default function LoginPage() {
       setMessage("⚠️ Google Sign-In not ready yet. Please try again shortly.");
       return;
     }
-
-    try {
-      google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          console.warn("Google Sign-In prompt dismissed:", notification);
-          setMessage(
-            "⚠️ Google Sign-In was closed or blocked. Please try again."
-          );
-        }
-      });
-    } catch (err) {
-      console.error("Google Sign-In error:", err);
-      setMessage("❌ Google Sign-In failed. Please refresh and try again.");
-    }
+    google.accounts.id.prompt();
   };
 
-  // ✅ Normal email login
+  // ✅ Email/Password login
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -112,16 +89,22 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.message || "Invalid email or password");
-      }
-
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Invalid email or password");
+
       const token = data.access_token || data.token || data.accessToken || null;
 
       if (token) localStorage.setItem("access_token", token);
-      else console.warn("⚠️ No token found in API response:", data);
+
+      // ✅ Store user info so name/img/email show in topbar
+      const user = {
+        email: email,
+        name: data.user?.name || email.split("@")[0],
+        picture:
+          data.user?.picture ||
+          "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", // default avatar
+      };
+      localStorage.setItem("user", JSON.stringify(user));
 
       router.push("/dashboard");
     } catch (err) {
