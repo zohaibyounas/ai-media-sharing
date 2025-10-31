@@ -49,9 +49,13 @@ export default function LoginPage() {
               throw new Error(data.message || "Google Sign-in failed");
 
             // ✅ Store access token and user info
-            if (data.token) {
-              localStorage.setItem("access_token", data.token);
-              console.log("✅ Google access_token stored:", data.token);
+            // ✅ Store access token (handle multiple key names)
+            const token =
+              data.accessToken || data.access_token || data.token || null;
+
+            if (token) {
+              localStorage.setItem("access_token", token);
+              console.log("✅ Google access_token stored:", token);
             } else {
               console.warn("⚠️ No access_token found in Google response");
             }
