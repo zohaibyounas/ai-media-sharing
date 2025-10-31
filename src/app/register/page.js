@@ -45,7 +45,9 @@ export default function RegisterPage() {
 
       if (!res.ok) throw new Error(data.message || "Registration failed");
 
-      setMessage("✅ Registration successful! Redirecting to login...");
+      toast.success(
+        `Registration successful! Welcome ${data.user?.username || "user"} 👋`
+      );
       setEmail("");
       setName("");
       setPassword("");
@@ -108,7 +110,11 @@ export default function RegisterPage() {
               console.log("💾 Saved user data to localStorage:", data.user);
             }
 
-            setMessage(`✅ Welcome ${data.user?.username || "Google user"}!`);
+            toast.success(
+              `Registration successful! Welcome ${
+                data.user?.username || "user"
+              } 👋`
+            );
             setTimeout(() => router.push("/dashboard"), 1000);
           } catch (err) {
             console.error("🔴 Google Sign-up Error:", err);

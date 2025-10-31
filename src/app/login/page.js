@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -63,7 +64,9 @@ export default function LoginPage() {
             localStorage.setItem("user", JSON.stringify(data.user));
             console.log("👤 Google User stored:", data.user);
 
-            setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
+            toast.success(
+              `Login successful! Welcome ${data.user?.username || "user"} 👋`
+            );
             setTimeout(() => router.push("/dashboard"), 1000);
           } catch (err) {
             console.error("❌ Google Login Error:", err);
@@ -137,6 +140,9 @@ export default function LoginPage() {
       };
       localStorage.setItem("user", JSON.stringify(user));
       console.log("👤 Email login user stored:", user);
+      toast.success(
+        `Login successful! Welcome ${data.user?.username || "user"} 👋`
+      );
 
       router.push("/dashboard");
     } catch (err) {
