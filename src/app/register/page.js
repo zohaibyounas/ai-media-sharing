@@ -37,6 +37,7 @@ export default function RegisterPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
+        console.log(data);
         throw new Error(data.message || "Registration failed");
       }
 
@@ -90,8 +91,13 @@ export default function RegisterPage() {
             setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
 
             // Optionally save token in localStorage
-            if (data.token) {
-              localStorage.setItem("authToken", data.token);
+            // ✅ Save both token and user info
+            const token = data.token || data.accessToken || data?.data?.token;
+            if (token) {
+              localStorage.setItem("authToken", token);
+            }
+            if (data.user) {
+              localStorage.setItem("user", JSON.stringify(data.user));
             }
 
             // ✅ Redirect to dashboard after 1s
