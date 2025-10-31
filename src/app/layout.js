@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Inter } from "next/font/google";
 import LayoutWrapper from "./layout-wrapper";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
 
       <body className={`${inter.className} bg-white text-gray-900`}>
         <LayoutWrapper>{children}</LayoutWrapper>
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function RegisterPage() {
   const router = useRouter(); // ✅ useRouter hook
