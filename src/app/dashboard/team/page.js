@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus, Download, MoreVertical } from "lucide-react";
+import { Plus, Download, MoreVertical, X } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -15,6 +15,8 @@ import {
 
 export default function TeamPage() {
   const [activeTab, setActiveTab] = useState("registered");
+  const [showModal, setShowModal] = useState(false);
+  const [email, setEmail] = useState("");
 
   const members = [
     {
@@ -52,12 +54,15 @@ export default function TeamPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] p-6">
+    <div className="min-h-screen bg-[#F9FAFB] p-6 relative">
       <div className="max-w-7xl mx-auto bg-white rounded-xl shadow-sm p-6 space-y-6 border border-gray-100">
         {/* Header */}
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-gray-900">Team Members</h1>
-          <Button className="bg-[#101828] hover:bg-[#0c121c] text-white rounded-lg flex items-center gap-2">
+          <Button
+            className="bg-[#101828] hover:bg-[#0c121c] text-white rounded-lg flex items-center gap-2"
+            onClick={() => setShowModal(true)}
+          >
             <Plus className="w-4 h-4" />
             Invite New Member
           </Button>
@@ -205,6 +210,71 @@ export default function TeamPage() {
           </div>
         )}
       </div>
+
+      {/* === Invite Member Modal === */}
+      {showModal && (
+        <>
+          {/* Background Overlay */}
+          <div
+            className="fixed inset-0 bg-black/40 z-50"
+            onClick={() => setShowModal(false)}
+          ></div>
+
+          {/* Modal Box */}
+          <div className="fixed inset-0 flex items-center justify-center z-50">
+            <div className="bg-white w-[460px] rounded-xl shadow-xl p-6 relative border border-gray-200">
+              {/* Close Button */}
+              <button
+                onClick={() => setShowModal(false)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Title */}
+              <h2 className="text-lg font-semibold text-gray-900 mb-5">
+                Invite Member
+              </h2>
+
+              {/* Email Field and Invite Button */}
+              <div className="flex items-center gap-2 mb-6">
+                <input
+                  type="email"
+                  placeholder="Enter Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-1 focus:ring-gray-400"
+                />
+                <button className="bg-[#101828] hover:bg-[#0c121c] text-white rounded-md px-5 py-2 text-sm font-medium">
+                  Invite
+                </button>
+              </div>
+
+              {/* Access Right */}
+              <div className="flex justify-between items-center text-sm text-gray-700">
+                <span>Access Right</span>
+                <div className="flex items-center gap-1 font-medium cursor-pointer">
+                  <span>Full Access</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4 text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

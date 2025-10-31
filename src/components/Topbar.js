@@ -82,9 +82,8 @@ export default function Topbar() {
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 relative overflow-hidden rounded-full border border-gray-200">
               <img
-                src={user.picture || "/topbar.jpg"}
+                src={user.picture}
                 alt="User avatar"
-                fill
                 className="object-cover rounded-full"
               />
             </div>

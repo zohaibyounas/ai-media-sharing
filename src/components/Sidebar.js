@@ -8,6 +8,14 @@ import {
   BarChart3,
   Settings,
   LogOut,
+  Users,
+  ChevronDown,
+  ChevronRight,
+  Globe,
+  QrCode,
+  Palette,
+  User,
+  CreditCard,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -17,16 +25,16 @@ const links = [
   { name: "Create Event", icon: CalendarPlus, href: "/dashboard/create-event" },
   { name: "My Events", icon: CalendarDays, href: "/dashboard/my-events" },
   { name: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
-  { name: "Team", icon: Settings, href: "/dashboard/team" },
-  { name: "Settings", icon: Settings, href: "/dashboard/settings" },
+  { name: "Team", icon: Users, href: "/dashboard/team" },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(true); // expand by default
 
-  // Hide sidebar on specific pages
+  // Hide sidebar on certain pages
   if (
     pathname === "/dashboard/walima-ceremony" ||
     pathname === "/dashboard/summer-gala" ||
@@ -35,7 +43,7 @@ export default function Sidebar() {
     return null;
   }
 
-  // ✅ Logout function
+  // ✅ Logout logic
   const handleLogout = async () => {
     setLoading(true);
     try {
@@ -44,13 +52,11 @@ export default function Sidebar() {
         localStorage.getItem("authToken");
 
       if (!token) {
-        console.warn("⚠️ No token found, redirecting to login.");
         router.push("/login");
         return;
       }
 
-      // Call logout API
-      const res = await fetch("https://api.fotoshareai.com/auth/logout", {
+      await fetch("https://api.fotoshareai.com/auth/logout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -58,16 +64,10 @@ export default function Sidebar() {
         },
       });
 
-      if (!res.ok && res.status !== 204) {
-        console.error("❌ Logout API failed:", await res.text());
-      }
-
-      // ✅ Clear tokens
       localStorage.removeItem("access_token");
       localStorage.removeItem("authToken");
       localStorage.removeItem("user");
 
-      // ✅ Redirect to login page
       router.push("/login");
     } catch (err) {
       console.error("Logout error:", err);
@@ -84,6 +84,7 @@ export default function Sidebar() {
         </div>
 
         <nav className="p-4 space-y-1">
+          {/* Main Links */}
           {links.map((item) => {
             const Icon = item.icon;
             const active = pathname === item.href;
@@ -102,6 +103,80 @@ export default function Sidebar() {
               </Link>
             );
           })}
+
+          {/* Settings Section */}
+          <div>
+            <button
+              onClick={() => setSettingsOpen(!settingsOpen)}
+              className="flex items-center justify-between w-full px-3 py-2 text-sm text-gray-500 hover:bg-gray-50 rounded-md"
+            >
+              <div className="flex items-center gap-3">
+                <Settings size={16} />
+                <span>Settings</span>
+              </div>
+              {settingsOpen ? (
+                <ChevronDown size={14} className="text-gray-500" />
+              ) : (
+                <ChevronRight size={14} className="text-gray-500" />
+              )}
+            </button>
+
+            {/* Sub-links */}
+            {settingsOpen && (
+              <div className="ml-8 mt-1 space-y-1">
+                <Link
+                  href="/dashboard/settings/domains"
+                  className={`flex items-center gap-2 text-sm px-2 py-1.5 rounded-md ${
+                    pathname === "/dashboard/settings/domains"
+                      ? "text-gray-900 bg-[#F2F4F7] font-medium"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <Globe size={14} /> Domains
+                </Link>
+                <Link
+                  href="/dashboard/settings/qr-code"
+                  className={`flex items-center gap-2 text-sm px-2 py-1.5 rounded-md ${
+                    pathname === "/dashboard/settings/qr-code"
+                      ? "text-gray-900 bg-[#F2F4F7] font-medium"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <QrCode size={14} /> My QR Code
+                </Link>
+                <Link
+                  href="/dashboard/settings/branding"
+                  className={`flex items-center gap-2 text-sm px-2 py-1.5 rounded-md ${
+                    pathname === "/dashboard/settings/branding"
+                      ? "text-gray-900 bg-[#F2F4F7] font-medium"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <Palette size={14} /> Branding
+                </Link>
+                <Link
+                  href="/dashboard/settings/profile"
+                  className={`flex items-center gap-2 text-sm px-2 py-1.5 rounded-md ${
+                    pathname === "/dashboard/settings/profile"
+                      ? "text-gray-900 bg-[#F2F4F7] font-medium"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <User size={14} /> Profile
+                </Link>
+                <Link
+                  href="/dashboard/settings/plan"
+                  className={`flex items-center gap-2 text-sm px-2 py-1.5 rounded-md ${
+                    pathname === "/dashboard/settings/plan"
+                      ? "text-gray-900 bg-[#F2F4F7] font-medium"
+                      : "text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  <CreditCard size={14} /> My Plan
+                </Link>
+              </div>
+            )}
+          </div>
         </nav>
       </div>
 

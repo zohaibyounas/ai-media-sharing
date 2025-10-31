@@ -108,7 +108,7 @@ export default function Features() {
               alt="Fast Search and Retrieval"
               width={400}
               height={250}
-              className="rounded-xl mb-4 h-68 object-cover"
+              className="rounded-xl mb-4 h-54 object-cover"
             />
             <h3 className="text-xl font-semibold mb-2">
               Fast Search & Easy Retrieval
