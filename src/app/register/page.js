@@ -108,12 +108,7 @@ export default function RegisterPage() {
               console.log("💾 Saved user data to localStorage:", data.user);
             }
 
-            if (data.user) console.log("🟢 User Data:", data.user);
-
-            localStorage.setItem("user", JSON.stringify(data.user));
-            if (token) localStorage.setItem("authToken", token);
-
-            setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
+            setMessage(`✅ Welcome ${data.user?.username || "Google user"}!`);
             setTimeout(() => router.push("/dashboard"), 1000);
           } catch (err) {
             console.error("🔴 Google Sign-up Error:", err);
