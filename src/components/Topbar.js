@@ -88,7 +88,7 @@ export default function Topbar() {
               />
             </div>
             <span className="text-sm font-medium text-gray-800 truncate max-w-[120px]">
-              {user.name || user.email}
+              {user.name || user.username}
             </span>
           </div>
         ) : (

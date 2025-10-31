@@ -28,7 +28,11 @@ export default function LoginPage() {
           "1024635425185-pupqinl9kj4nq1hv5eq7mu5jbj4nkuvs.apps.googleusercontent.com",
         callback: async (googleResponse) => {
           try {
+            console.log("🟢 Google Response:", googleResponse);
+
             const idToken = googleResponse.credential;
+            console.log("🪪 Google ID Token:", idToken);
+
             const apiRes = await fetch(
               "https://api.fotoshareai.com/auth/oauth/google/token",
               {
@@ -39,17 +43,26 @@ export default function LoginPage() {
             );
 
             const data = await apiRes.json();
+            console.log("🟢 API Response from Google Login:", data);
 
             if (!apiRes.ok)
               throw new Error(data.message || "Google Sign-in failed");
 
-            // ✅ Store user info
+            // ✅ Store access token and user info
+            if (data.token) {
+              localStorage.setItem("access_token", data.token);
+              console.log("✅ Google access_token stored:", data.token);
+            } else {
+              console.warn("⚠️ No access_token found in Google response");
+            }
+
             localStorage.setItem("user", JSON.stringify(data.user));
-            if (data.token) localStorage.setItem("access_token", data.token);
+            console.log("👤 Google User stored:", data.user);
 
             setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
             setTimeout(() => router.push("/dashboard"), 1000);
           } catch (err) {
+            console.error("❌ Google Login Error:", err);
             setMessage(`❌ ${err.message}`);
           }
         },
@@ -74,8 +87,10 @@ export default function LoginPage() {
   const handleGoogleSignIn = () => {
     if (!window.google || !window.googleInitialized) {
       setMessage("⚠️ Google Sign-In not ready yet. Please try again shortly.");
+      console.warn("⚠️ Google Sign-In not ready yet.");
       return;
     }
+    console.log("🔵 Triggering Google Sign-In...");
     google.accounts.id.prompt();
   };
 
@@ -86,6 +101,8 @@ export default function LoginPage() {
     setError("");
 
     try {
+      console.log("📧 Attempting login with:", { email, password });
+
       const res = await fetch("https://api.fotoshareai.com/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -93,24 +110,33 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
+      console.log("🟢 API Response (Email Login):", data);
+
       if (!res.ok) throw new Error(data.message || "Invalid email or password");
 
       const token = data.access_token || data.token || data.accessToken || null;
 
-      if (token) localStorage.setItem("access_token", token);
+      if (token) {
+        localStorage.setItem("access_token", token);
+        console.log("✅ Email login access_token stored:", token);
+      } else {
+        console.warn("⚠️ No access_token returned for email login");
+      }
 
-      // ✅ Store user info so name/img/email show in topbar
+      // ✅ Store user info
       const user = {
         email: email,
         name: data.user?.name || email.split("@")[0],
         picture:
           data.user?.picture ||
-          "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", // default avatar
+          "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
       };
       localStorage.setItem("user", JSON.stringify(user));
+      console.log("👤 Email login user stored:", user);
 
       router.push("/dashboard");
     } catch (err) {
+      console.error("❌ Login error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
