@@ -24,33 +24,37 @@ export default function RegisterPage() {
     setMessage("");
 
     try {
+      const body = {
+        email,
+        name,
+        password,
+        acceptTerms: true,
+      };
+      console.log("🟡 Sending Register Request Body:", body);
+
       const res = await fetch("https://api.fotoshareai.com/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          name,
-          password,
-          acceptTerms: true,
-        }),
+        body: JSON.stringify(body),
       });
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        console.log(data);
-        throw new Error(data.message || "Registration failed");
-      }
+      console.log("🟠 Register Response Status:", res.status);
+
+      const data = await res.json().catch(() => ({}));
+      console.log("🟢 Register API Response:", data);
+
+      if (!res.ok) throw new Error(data.message || "Registration failed");
 
       setMessage("✅ Registration successful! Redirecting to login...");
       setEmail("");
       setName("");
       setPassword("");
 
-      // ✅ Redirect after short delay
       setTimeout(() => {
         router.push("/login");
       }, 1500);
     } catch (err) {
+      console.error("🔴 Register Error:", err);
       setMessage(`❌ ${err.message || "Network error. Please try again."}`);
     } finally {
       setLoading(false);
@@ -69,43 +73,37 @@ export default function RegisterPage() {
         callback: async (googleResponse) => {
           try {
             const idToken = googleResponse.credential;
-            console.log("Google ID Token:", idToken);
+            console.log("🟡 Google ID Token:", idToken);
 
-            const apiRes = await fetch(
-              "https://api.fotoshareai.com/auth/oauth/google/token",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ idToken }),
-              }
-            );
-            console.log("Google Auth API Response Status:", apiRes.status);
+            const apiUrl =
+              "https://api.fotoshareai.com/auth/oauth/google/token";
+            console.log("🟣 Sending to:", apiUrl);
+
+            const apiRes = await fetch(apiUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ idToken }),
+            });
+
+            console.log("🟠 Google Auth API Response Status:", apiRes.status);
             const data = await apiRes.json();
-            console.log("Google Auth Response:", data);
+            console.log("🟢 Full Google Auth Response:", data);
 
             if (!apiRes.ok)
               throw new Error(data.message || "Google Sign-up failed");
-            localStorage.setItem("user", JSON.stringify(data.user));
 
-            // ✅ Success: store user info or token if needed
-            setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
-
-            // Optionally save token in localStorage
-            // ✅ Save both token and user info
             const token = data.token || data.accessToken || data?.data?.token;
-            if (token) {
-              localStorage.setItem("authToken", token);
-            }
-            if (data.user) {
-              localStorage.setItem("user", JSON.stringify(data.user));
-            }
+            console.log("🔵 Extracted Token:", token);
 
-            // ✅ Redirect to dashboard after 1s
-            setTimeout(() => {
-              router.push("/dashboard");
-            }, 1000);
+            if (data.user) console.log("🟢 User Data:", data.user);
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+            if (token) localStorage.setItem("authToken", token);
+
+            setMessage(`✅ Welcome ${data.user?.name || "Google user"}!`);
+            setTimeout(() => router.push("/dashboard"), 1000);
           } catch (err) {
-            console.error("Google Sign-up error:", err);
+            console.error("🔴 Google Sign-up Error:", err);
             setMessage(`❌ ${err.message}`);
           }
         },
