@@ -64,7 +64,7 @@ export default function RegisterPage() {
 
       google.accounts.id.initialize({
         client_id:
-          "http://1024635425185-pupqinl9kj4nq1hv5eq7mu5jbj4nkuvs.apps.googleusercontent.com",
+          "1024635425185-pupqinl9kj4nq1hv5eq7mu5jbj4nkuvs.apps.googleusercontent.com",
         callback: async (googleResponse) => {
           try {
             const idToken = googleResponse.credential;
@@ -78,7 +78,7 @@ export default function RegisterPage() {
                 body: JSON.stringify({ idToken }),
               }
             );
-            console.log(apiRes);
+            console.log("Google Auth API Response Status:", apiRes.status);
             const data = await apiRes.json();
             console.log("Google Auth Response:", data);
 
