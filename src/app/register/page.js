@@ -92,8 +92,21 @@ export default function RegisterPage() {
             if (!apiRes.ok)
               throw new Error(data.message || "Google Sign-up failed");
 
-            const token = data.token || data.accessToken || data?.data?.token;
-            console.log("🔵 Extracted Token:", token);
+            const accessToken = data.accessToken;
+            console.log("🔵 Extracted Access Token:", accessToken);
+
+            if (accessToken) {
+              localStorage.setItem("access_token", accessToken);
+              console.log(
+                "💾 Saved access_token to localStorage:",
+                accessToken
+              );
+            }
+
+            if (data.user) {
+              localStorage.setItem("user", JSON.stringify(data.user));
+              console.log("💾 Saved user data to localStorage:", data.user);
+            }
 
             if (data.user) console.log("🟢 User Data:", data.user);
 
