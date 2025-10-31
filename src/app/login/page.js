@@ -25,15 +25,18 @@ export default function LoginPage() {
 
       google.accounts.id.initialize({
         client_id:
-          "656438575097-1o2lffjt39mbqhjg5fqmnon3iun7aj37.apps.googleusercontent.com",
+          "1024635425185-pupqinl9kj4nq1hv5eq7mu5jbj4nkuvs.apps.googleusercontent.com",
         callback: async (googleResponse) => {
           try {
             const idToken = googleResponse.credential;
-            const apiRes = await fetch("/api/auth/google", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ idToken }),
-            });
+            const apiRes = await fetch(
+              "https://api.fotoshareai.com/auth/oauth/google/token",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ idToken }),
+              }
+            );
 
             const data = await apiRes.json();
 
