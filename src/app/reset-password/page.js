@@ -1,5 +1,8 @@
 "use client";
-export const dynamic = "force-dynamic"; // ✅ prevent static prerendering
+"use client";
+export const dynamic = "force-dynamic";
+export const revalidate = 0; // 🚫 ensures it's not pre-rendered or cached
+export const fetchCache = "force-no-store";
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -16,8 +19,10 @@ export default function ResetPasswordPage() {
 
   // ✅ extract token safely (client-side only)
   useEffect(() => {
-    const t = searchParams.get("token");
-    if (t) setToken(t);
+    if (typeof window !== "undefined") {
+      const t = searchParams.get("token");
+      if (t) setToken(t);
+    }
   }, [searchParams]);
 
   const [email, setEmail] = useState("");
