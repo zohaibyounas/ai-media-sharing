@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react"; // 👈 Added for show/hide password
 
 export default function RegisterPage() {
   const router = useRouter(); // ✅ useRouter hook
@@ -17,6 +18,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👈 state for toggle
 
   // ✅ Normal registration
   const handleRegister = async (e) => {
@@ -217,18 +219,27 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
-                Password
-              </label>
+            <div className="relative">
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
-                className="h-10 text-sm"
+                className="h-10 text-sm pr-10"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                tabIndex={-1}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4 cursor-pointer" />
+                ) : (
+                  <Eye className="w-4 h-4 cursor-pointer" />
+                )}
+              </button>
             </div>
 
             {message && (

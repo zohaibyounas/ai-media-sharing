@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react"; // 👈 Add this at the top
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // ✅ Google Sign-In setup
   useEffect(() => {
@@ -107,6 +109,7 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
+      console.log(data);
       if (!res.ok) throw new Error(data.message || "Invalid email or password");
 
       const token = data.access_token || data.token || data.accessToken || null;
@@ -187,18 +190,36 @@ export default function LoginPage() {
                 <label className="text-sm font-medium text-gray-700">
                   Password
                 </label>
-                <a href="#" className="text-xs text-gray-500 hover:underline">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-gray-500 hover:underline"
+                >
                   Forgot password?
-                </a>
+                </Link>
               </div>
-              <Input
-                type="password"
-                placeholder="Enter Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="h-10 md:h-11 text-sm md:text-base"
-              />
+
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="h-10 md:h-11 text-sm md:text-base pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                  tabIndex={-1}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4 cursor-pointer" />
+                  ) : (
+                    <Eye className="w-4 h-4 cursor-pointer" />
+                  )}
+                </button>
+              </div>
             </div>
 
             <div className="flex items-center space-x-2">
