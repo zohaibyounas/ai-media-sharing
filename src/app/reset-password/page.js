@@ -1,7 +1,6 @@
 "use client";
 "use client";
 export const dynamic = "force-dynamic";
-export const revalidate = 0; // 🚫 ensures it's not pre-rendered or cached
 export const fetchCache = "force-no-store";
 
 import { useState, useEffect } from "react";
