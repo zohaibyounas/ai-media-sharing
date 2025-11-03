@@ -1,7 +1,8 @@
 "use client";
-"use client";
+
 export const dynamic = "force-dynamic";
-export const fetchCache = "force-no-store";
+export const fetchCache = "only-no-store";
+export const runtime = "edge"; // ✅ important for Vercel edge runtime
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
