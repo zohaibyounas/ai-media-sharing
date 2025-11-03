@@ -15,23 +15,36 @@ export default function ForgotPasswordPage() {
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
+
+    if (!email.trim()) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
     setLoading(true);
 
     try {
+      // Small delay ensures React state + DNS + preflight all stabilize
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
       const res = await fetch(
         "https://api.fotoshareai.com/auth/password/forgot",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email: email.trim() }),
         }
       );
 
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(
-          errorData.detail?.[0]?.msg || "Failed to send reset link"
-        );
+        let errorMessage = "Failed to send reset link";
+        try {
+          const errorData = await res.json();
+          errorMessage = errorData.detail?.[0]?.msg || errorMessage;
+        } catch {
+          // no need to parse if response isn't JSON
+        }
+        throw new Error(errorMessage);
       }
 
       toast.success("Password reset link sent to your email 📧", {

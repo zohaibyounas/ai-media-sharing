@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic"; // ✅ prevent static prerendering
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -11,7 +12,13 @@ import { toast } from "sonner";
 export default function ResetPasswordPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token"); // from email link
+  const [token, setToken] = useState("");
+
+  // ✅ extract token safely (client-side only)
+  useEffect(() => {
+    const t = searchParams.get("token");
+    if (t) setToken(t);
+  }, [searchParams]);
 
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -37,21 +44,26 @@ export default function ResetPasswordPage() {
         }
       );
 
-      // ✅ Handle empty body safely
+      // ✅ Handle cases when response body is empty
       let data = null;
       try {
         data = await res.json();
       } catch (err) {
-        // Ignore if no JSON body is present
+        console.warn("⚠️ No JSON body returned from API");
       }
 
       if (!res.ok) {
-        throw new Error(data?.detail?.[0]?.msg || "Password reset failed");
+        throw new Error(
+          data?.detail?.[0]?.msg ||
+            data?.message ||
+            "Password reset failed. Please try again."
+        );
       }
 
       toast.success("✅ Password has been reset successfully!", {
         duration: 4000,
       });
+
       setTimeout(() => router.push("/login"), 4000);
     } catch (err) {
       console.error("❌ Reset password error:", err);
