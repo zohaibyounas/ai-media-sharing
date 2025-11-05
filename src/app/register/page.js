@@ -40,7 +40,7 @@ export default function RegisterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-
+      console.log(res);
       console.log("🟠 Register Response Status:", res.status);
 
       const data = await res.json().catch(() => ({}));
