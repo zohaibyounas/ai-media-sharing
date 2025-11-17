@@ -23,7 +23,8 @@ export default function LayoutWrapper({ children }) {
     pathname === "/dashboard/team" ||
     pathname === "/dashboard/settings" ||
     pathname === "/dashboard/settings/branding" ||
-    pathname === "/reset-password";
+    pathname === "/reset-password" ||
+    pathname === "/dashboard/settings/plan";
 
   return (
     <>
