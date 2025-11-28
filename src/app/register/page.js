@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ to redirect after register
 import Image from "next/image";
-import { Button } from "../components/ui/button";
+import { Button } from "../../components/ui/button";
 import { Input } from "../../components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";

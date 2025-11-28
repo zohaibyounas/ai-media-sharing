@@ -2,26 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Input } from "../../components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "../components/ui/switch";
+import { Checkbox } from "../components/ui/checkbox";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectItem,
   SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+} from "../components/ui/select";
+import { Separator } from "../components/ui/separator";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "@/components/ui/accordion";
+} from "../components/ui/accordion";
 import { Bell, Copy, Mail, Eye, Lock, X } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import Image from "next/image";

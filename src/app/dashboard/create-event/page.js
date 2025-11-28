@@ -1,5 +1,5 @@
 // app/dashboard/create-event/page.js
-import CreateEventForm from "@/components/CreateEventForm";
+import CreateEventForm from "../../../components/CreateEventForm";
 
 export default function CreateEventPage() {
   return (

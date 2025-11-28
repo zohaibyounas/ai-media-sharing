@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "../components/ui/button";
-import { Input } from "../../components/ui/input";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
 import { Plus, Download, MoreVertical, X } from "lucide-react";
 import {
   Table,
@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "../../../components/ui/table";
 
 export default function TeamPage() {
   const [activeTab, setActiveTab] = useState("registered");

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Heart, MessageSquare, TabletSmartphone } from "lucide-react";
 import Image from "next/image";
 import { useI18n } from "../context/I18nContext";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "../components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Check, Circle } from "lucide-react";
 import { useI18n } from "../context/I18nContext";
 

@@ -6,8 +6,8 @@ export const runtime = "edge"; // ✅ important for Vercel edge runtime
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Button } from "../components/ui/button";
-import { Input } from "../../components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
