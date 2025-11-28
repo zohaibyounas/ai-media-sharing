@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation"; // ✅ Import router
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "../components/ui/button";
+import { Input } from "../../components/ui/input";
 import { Eye, Play, Trash2, Share2, MoreHorizontal, Users } from "lucide-react";
 import Link from "next/link";
 
