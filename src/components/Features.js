@@ -2,8 +2,8 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
 import { Heart, Download } from "lucide-react";
 import { useI18n } from "../context/I18nContext";
 
