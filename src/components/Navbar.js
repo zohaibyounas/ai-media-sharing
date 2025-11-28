@@ -1,82 +1,161 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation"; // ✅ import router for navigation
-import { Menu, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Menu, X, Globe } from "lucide-react";
+import { useI18n } from "../context/I18nContext";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const router = useRouter(); // ✅ initialize router
+  const [langOpen, setLangOpen] = useState(false);
+  const router = useRouter();
+  const { t, lang, setLang } = useI18n();
 
   const links = [
-    { name: "How it works", href: "#" },
-    { name: "Products", href: "#" },
-    { name: "Integrations", href: "#" },
-    { name: "Use Cases", href: "#" },
-    { name: "Blogs", href: "#" },
-    { name: "Case Study", href: "#" },
-    { name: "Examples", href: "#" },
+    { name: t("nav.how"), href: "#" },
+    { name: t("nav.products"), href: "#" },
+    { name: t("nav.integrations"), href: "#" },
+    { name: t("nav.usecases"), href: "#" },
+    { name: t("nav.blogs"), href: "#" },
+    { name: t("nav.casestudy"), href: "#" },
+    { name: t("nav.examples"), href: "#" },
   ];
 
-  // ✅ handle login click
-  const handleLogin = () => {
-    router.push("/login");
-  };
+  const languages = ["en", "fr", "de"];
+  const isRTL = ["ar", "ur"].includes(lang);
+
+  const handleLogin = () => router.push("/login");
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 bg-[#E2E2FF] backdrop-blur-md border-b border-gray-200">
-      <div className="max-w-7xl lg:max-w-[87%] mx-auto flex justify-between items-center px-6 py-4">
+      <div
+        className={`max-w-7xl lg:max-w-[95%] mx-auto flex flex-wrap lg:flex-nowrap items-center px-4 md:px-6 py-4 ${
+          isRTL ? "flex-row-reverse" : ""
+        }`}
+      >
         {/* Logo */}
-        <div className="font-semibold text-gray-900 text-lg">Logohere</div>
+        <div className="font-semibold text-gray-900 text-lg cursor-pointer">
+          {t("Logohere") || "Logohere"}
+        </div>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex space-x-8 text-gray-700 font-medium">
+        <div
+          className={`hidden lg:flex flex-1 flex-wrap items-center gap-4 md:gap-6 ${
+            isRTL ? "justify-start" : "justify-end"
+          }`}
+        >
           {links.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="hover:text-black transition-colors"
+              className="hover:text-black transition-colors cursor-pointer whitespace-nowrap"
             >
               {link.name}
             </a>
           ))}
-        </div>
 
-        {/* ✅ Login Button */}
-        <div className="hidden lg:block">
+          {/* Language Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="flex items-center gap-1 hover:text-black transition-colors cursor-pointer"
+            >
+              <Globe className="w-5 h-5" />
+              <span className="text-sm">{t("nav.language")}</span>
+            </button>
+
+            {langOpen && (
+              <div
+                className={`absolute top-full mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[120px] ${
+                  isRTL ? "right-0 text-right" : "left-0 text-left"
+                }`}
+              >
+                {languages.map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => {
+                      setLang(l);
+                      setLangOpen(false);
+                    }}
+                    className="w-full px-4 py-2 hover:bg-gray-100 transition-colors cursor-pointer"
+                  >
+                    {l.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Login Button */}
           <button
             onClick={handleLogin}
-            className="bg-gray-900 text-white px-5 py-2 rounded-lg hover:bg-black transition-colors cursor-pointer"
+            className="bg-gray-900 text-white px-4 md:px-5 py-2 rounded-lg hover:bg-black transition-colors cursor-pointer whitespace-nowrap"
           >
-            Login
+            {t("nav.login")}
           </button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <div className="lg:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)}>
+        {/* Mobile Menu */}
+        <div className="lg:hidden flex items-center gap-3">
+          <div className="relative">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="cursor-pointer"
+            >
+              <Globe className="w-5 h-5" />
+            </button>
+            {langOpen && (
+              <div
+                className={`absolute top-10 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[120px] ${
+                  isRTL ? "right-0 text-right" : "left-0 text-left"
+                }`}
+              >
+                {languages.map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => {
+                      setLang(l);
+                      setLangOpen(false);
+                    }}
+                    className="w-full px-4 py-2 hover:bg-gray-100 transition-colors cursor-pointer"
+                  >
+                    {l.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="cursor-pointer"
+          >
             {menuOpen ? <X /> : <Menu />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Links */}
       {menuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-200 px-6 py-4 space-y-3">
+        <div
+          className={`lg:hidden bg-white border-t border-gray-200 px-4 md:px-6 py-4 space-y-3 flex flex-col ${
+            isRTL ? "text-right" : "text-left"
+          }`}
+        >
           {links.map((link) => (
             <a
               key={link.name}
               href={link.href}
-              className="block text-gray-700 hover:text-black"
+              className="text-gray-700 hover:text-black cursor-pointer whitespace-nowrap"
             >
               {link.name}
             </a>
           ))}
           <button
             onClick={handleLogin}
-            className="mt-3 w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-black transition-colors"
+            className="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-black transition-colors cursor-pointer whitespace-nowrap"
           >
-            Login
+            {t("nav.login")}
           </button>
         </div>
       )}

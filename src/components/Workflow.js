@@ -1,13 +1,18 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useI18n } from "../context/I18nContext";
 
 export default function Workflow() {
+  const { t, lang } = useI18n();
+  const isRTL = ["ar", "ur"].includes(lang);
+
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 py-8"
-      style={{
-        background: "linear-gradient(180deg, #E2E2FF 188.98%, #FFFFFF 213.29%)",
-      }}
+      className={`relative flex flex-col md:flex-row items-center justify-between gap-12 py-16 md:py-24 overflow-hidden bg-white lg:max-w-[87%] max-w-6xl mx-auto px-6 ${
+        isRTL ? "text-right" : "text-left"
+      }`}
     >
       <Card className="w-full max-w-6xl lg:max-w-[87%] mx-auto shadow-2xl border-0">
         <CardContent className="p-8 md:p-12">
@@ -15,20 +20,19 @@ export default function Workflow() {
             {/* Header */}
             <div className="space-y-4">
               <h1 className="text-sm md:text-sm font-bold text-gray-900 tracking-tight">
-                SMARTER PHOTO MANAGEMENT
+                {t("workflow.pretitle")}
               </h1>
               <p className="text-xl md:text-4xl text-[#101828] font-medium">
-                Ready to Transform Your Photo Workflow?
+                {t("workflow.title")}
               </p>
             </div>
 
             {/* Description */}
             <div className="max-w-2xl mx-auto">
               <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-                Join photographers and event organizers worldwide who save time,
-                stay organized, and
+                {t("workflow.description.line1")}
                 <span className="block font-semibold text-gray-800">
-                  deliver a premium client experience with Photomo
+                  {t("workflow.description.line2")}
                 </span>
               </p>
             </div>
@@ -36,7 +40,7 @@ export default function Workflow() {
             {/* CTA Section */}
             <div className="space-y-4 pt-4">
               <Button
-                className="px-6 py-6 text-md  rounded-lg"
+                className="px-6 py-6 text-md rounded-lg"
                 style={{ backgroundColor: "#101828" }}
               >
                 <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center">
@@ -55,9 +59,9 @@ export default function Workflow() {
                     />
                   </svg>
                 </div>
-                Start Free Trial
+                {t("workflow.cta.button")}
               </Button>
-              <p className="text-gray-500 text-sm">No credit card required</p>
+              <p className="text-gray-500 text-sm">{t("workflow.cta.note")}</p>
             </div>
           </div>
         </CardContent>

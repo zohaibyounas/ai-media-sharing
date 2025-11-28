@@ -5,40 +5,44 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, Download } from "lucide-react";
+import { useI18n } from "../context/I18nContext";
 
 export default function Features() {
+  const { t, lang } = useI18n();
+  const isRTL = ["ar", "ur"].includes(lang);
+
   return (
     <section className="w-full bg-white text-gray-800">
       {/* HERO SECTION */}
-      <div className="max-w-6xl lg:max-w-[87%] mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 lg:gap-96 items-center">
+      <div
+        className={`max-w-6xl lg:max-w-[87%] mx-auto px-6 py-16 grid md:grid-cols-2 gap-12 lg:gap-96 items-center ${
+          isRTL ? "text-right" : "text-left"
+        }`}
+      >
         {/* LEFT SIDE */}
         <div>
           <p className="text-sm font-medium tracking-wide text-gray-500 mb-2">
-            AI-POWERED PHOTO MANAGEMENT
+            {t("features.pretitle")}
           </p>
           <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-            AI-Driven Face Recognition Photo Sharing
+            {t("features.title")}
           </h1>
           <p className="text-gray-600 max-w-lg mb-8">
-            Transform the way you share photos with advanced AI recognition. Our
-            system automatically detects faces and tags them, making it faster
-            and simpler to organize, find, and deliver photos to the right
-            people, securely and effortlessly.
+            {t("features.paragraph")}
           </p>
           <Button size="lg" className="px-6 py-3 text-base">
-            Try AI Photo Sharing
+            {t("features.ctaTry")}
           </Button>
         </div>
 
         {/* RIGHT SIDE - Find Your Photos */}
         <div className="relative flex flex-col items-center justify-center">
           <p className="text-sm font-semibold text-gray-700 mb-6">
-            Find your Photos
+            {t("features.rightPretitle")}
           </p>
 
           {/* Frame + Face Overlay */}
           <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
-            {/* Big frame image */}
             <Image
               src="/Frame.png"
               alt="Frame overlay"
@@ -46,7 +50,6 @@ export default function Features() {
               className="object-contain z-10"
             />
 
-            {/* Smaller circular woman image inside the frame */}
             <div className="absolute w-28 h-28 md:w-36 md:h-36 rounded-full overflow-hidden z-0">
               <Image
                 src="/fimg1.jpg"
@@ -57,7 +60,9 @@ export default function Features() {
             </div>
           </div>
 
-          <p className="text-xs text-gray-500 mt-3">AI-Powered Galleries</p>
+          <p className="text-xs text-gray-500 mt-3">
+            {t("features.rightCaption")}
+          </p>
         </div>
       </div>
 
@@ -67,18 +72,15 @@ export default function Features() {
           <CardContent className="p-0">
             <Image
               src="/f2.jpg"
-              alt="Automatic Face Detection"
+              alt={t("features.card1.title")}
               width={400}
               height={250}
               className="rounded-xl mb-4"
             />
             <h3 className="text-xl font-semibold mb-2">
-              Automatic Face Detection & Organization
+              {t("features.card1.title")}
             </h3>
-            <p className="text-gray-600 text-sm">
-              Our AI scans photos, identifies faces, and sorts them into albums
-              — saving time and eliminating manual work.
-            </p>
+            <p className="text-gray-600 text-sm">{t("features.card1.desc")}</p>
           </CardContent>
         </Card>
 
@@ -86,18 +88,15 @@ export default function Features() {
           <CardContent className="p-0">
             <Image
               src="/f3.jpg"
-              alt="Fast Search and Retrieval"
+              alt={t("features.card2.title")}
               width={400}
               height={250}
               className="rounded-xl mb-4"
             />
             <h3 className="text-xl font-semibold mb-2">
-              Fast Search & Easy Retrieval
+              {t("features.card2.title")}
             </h3>
-            <p className="text-gray-600 text-sm">
-              Locate photos instantly by searching a person’s name. AI-powered
-              search ensures your memories are always just a click away.
-            </p>
+            <p className="text-gray-600 text-sm">{t("features.card2.desc")}</p>
           </CardContent>
         </Card>
 
@@ -105,27 +104,27 @@ export default function Features() {
           <CardContent className="p-0">
             <Image
               src="/f4.jpg"
-              alt="Fast Search and Retrieval"
+              alt={t("features.card3.title")}
               width={400}
               height={250}
               className="rounded-xl mb-4 h-54 object-cover"
             />
             <h3 className="text-xl font-semibold mb-2">
-              Fast Search & Easy Retrieval
+              {t("features.card3.title")}
             </h3>
-            <p className="text-gray-600 text-sm">
-              Locate photos instantly by searching a person’s name. AI-powered
-              search ensures your memories are always just a click away.
-            </p>
+            <p className="text-gray-600 text-sm">{t("features.card3.desc")}</p>
           </CardContent>
         </Card>
       </div>
 
       {/* COLLABORATIVE SECTION */}
-      <div className="relative max-w-6xl lg:max-w-[87%] mx-auto px-6 pb-24 grid md:grid-cols-2 gap-12 items-center">
+      <div
+        className={`relative max-w-6xl lg:max-w-[87%] mx-auto px-6 pb-24 grid md:grid-cols-2 gap-12 items-center ${
+          isRTL ? "text-right" : "text-left"
+        }`}
+      >
         {/* LEFT SIDE - IMAGE + BACKGROUND */}
         <div className="relative flex justify-center md:justify-start">
-          {/* SVG Blob Background */}
           <div className="absolute -z-10 top-6 left-[-40px] w-[420px] h-[360px] opacity-90">
             <svg
               viewBox="0 0 600 400"
@@ -145,19 +144,17 @@ export default function Features() {
             </svg>
           </div>
 
-          {/* IMAGE CARD */}
           <div className="relative">
             <div className="relative rounded-[22px] overflow-hidden shadow-md">
               <Image
                 src="/slection.jpg"
-                alt="Photo Selection"
+                alt={t("features.collab.title")}
                 width={500}
                 height={350}
                 className="rounded-[22px] object-cover"
               />
             </div>
 
-            {/* Floating Dark Icons */}
             <div className="absolute -top-5 right-5 flex gap-3 z-20">
               <div className="bg-gray-900 text-white p-2.5 rounded-full shadow-lg cursor-pointer hover:scale-105 transition-transform">
                 <Heart className="w-5 h-5" />
@@ -167,7 +164,6 @@ export default function Features() {
               </div>
             </div>
 
-            {/* Reflection Shadow under Image */}
             <div className="absolute bottom-[-12px] left-1/2 -translate-x-1/2 w-[60%] h-[18px] bg-gray-400/30 rounded-full blur-md opacity-50"></div>
           </div>
         </div>
@@ -175,22 +171,20 @@ export default function Features() {
         {/* RIGHT SIDE - TEXT CONTENT */}
         <div>
           <p className="text-sm font-medium tracking-wide text-gray-500 mb-2 uppercase">
-            Collaborative
+            {t("features.collab.pretitle")}
           </p>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Photo Selection
+            {t("features.collab.title")}
           </h2>
           <p className="text-gray-600 mb-6 leading-relaxed">
-            Photo Selection inbuilt into photo gallery. Hassle Free selection
-            for Album Creation, Photo Proofing, Photo Editing etc. Save your own
-            and your client’s precious time.
+            {t("features.collab.paragraph")}
           </p>
 
           <Button
             size="lg"
             className="bg-gray-900 text-white hover:bg-gray-800 mb-8"
           >
-            Try Selection
+            {t("features.collab.cta")}
           </Button>
 
           <div className="w-full h-[1px] bg-gray-200 mb-8"></div>
@@ -199,9 +193,11 @@ export default function Features() {
           <div className="grid sm:grid-cols-3 gap-6 text-center md:text-left">
             <div>
               <Heart className="mx-auto md:mx-0 mb-3 w-5 h-5 text-gray-800" />
-              <p className="font-medium mb-1">Simply Like to Select</p>
+              <p className="font-medium mb-1">
+                {t("features.grid.item1.title")}
+              </p>
               <p className="text-sm text-gray-500">
-                Easy photo selection with a simple like action.
+                {t("features.grid.item1.desc")}
               </p>
             </div>
             <div>
@@ -221,16 +217,20 @@ export default function Features() {
                   />
                 </svg>
               </div>
-              <p className="font-medium mb-1">Comment Specific Needs</p>
+              <p className="font-medium mb-1">
+                {t("features.grid.item2.title")}
+              </p>
               <p className="text-sm text-gray-500">
-                Add comments for specific requirements or feedback.
+                {t("features.grid.item2.desc")}
               </p>
             </div>
             <div>
               <Download className="mx-auto md:mx-0 mb-3 w-5 h-5 text-gray-800" />
-              <p className="font-medium mb-1">Select on Any Device</p>
+              <p className="font-medium mb-1">
+                {t("features.grid.item3.title")}
+              </p>
               <p className="text-sm text-gray-500">
-                Select photos from any device, anywhere.
+                {t("features.grid.item3.desc")}
               </p>
             </div>
           </div>

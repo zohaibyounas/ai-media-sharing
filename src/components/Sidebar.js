@@ -77,7 +77,8 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="w-60 bg-white border-r border-gray-200 flex flex-col justify-between">
+    // ✅ Hide sidebar on small screens
+    <aside className="hidden sm:flex w-60 bg-white border-r border-gray-200 flex-col justify-between">
       <div>
         <div className="px-6 py-4 text-lg font-semibold border-b">
           Logo here

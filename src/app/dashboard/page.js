@@ -12,8 +12,16 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, Users, Image, Briefcase, Plus, Filter } from "lucide-react";
-import { Pencil, Trash2 } from "lucide-react";
+import {
+  Calendar,
+  Users,
+  Image,
+  Briefcase,
+  Plus,
+  Filter,
+  Pencil,
+  Trash2,
+} from "lucide-react";
 
 const statsData = [
   {
@@ -118,26 +126,27 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className=" space-y-8 bg-[#f9fafb]">
+    <div className="space-y-8 bg-[#f9fafb] p-4 md:p-6">
       {/* === Top Stats Cards === */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {statsData.map((s) => (
           <div
             key={s.title}
-            className="bg-white border border-gray-100 rounded-xl shadow-sm p-5 flex items-center justify-between hover:shadow-md transition"
+            className="bg-white border border-gray-100 rounded-xl shadow-sm p-4 sm:p-5 flex items-center justify-between hover:shadow-md transition"
           >
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+            <div className="flex items-center space-x-3 sm:space-x-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 rounded-lg flex items-center justify-center">
                 {s.icon}
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">{s.title}</p>
-                <h3 className="text-2xl font-bold text-gray-900 mt-1">
+                <p className="text-xs sm:text-sm text-gray-500 font-medium">
+                  {s.title}
+                </p>
+                <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mt-1">
                   {s.value}
                 </h3>
                 <p className={`text-xs mt-1 ${s.changeColor}`}>
-                  {s.change}{" "}
-                  <span className="text-gray-400"> {s.subtitle}</span>
+                  {s.change} <span className="text-gray-400">{s.subtitle}</span>
                 </p>
               </div>
             </div>
@@ -146,9 +155,9 @@ export default function DashboardPage() {
       </div>
 
       {/* === Table Section === */}
-      <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 border border-gray-100 overflow-x-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4 md:mb-6">
           <div>
             <h2 className="text-lg font-semibold text-gray-800">
               Recent Workspaces
@@ -158,11 +167,11 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap gap-2 md:gap-3">
             <Button
               variant="outline"
               size="sm"
-              className="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 border-gray-200"
+              className="flex items-center gap-1 sm:gap-2 bg-gray-50 hover:bg-gray-100 border-gray-200"
             >
               <Filter size={16} />
               Filter
@@ -170,7 +179,7 @@ export default function DashboardPage() {
 
             <Button
               size="sm"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-2"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1 sm:gap-2"
             >
               <Plus size={14} />
               Create Workspace
@@ -182,22 +191,22 @@ export default function DashboardPage() {
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <Table>
+          <Table className="min-w-[600px] sm:min-w-full">
             <TableHeader>
               <TableRow className="bg-gray-50">
-                <TableHead className="font-semibold text-gray-700">
+                <TableHead className="font-semibold text-gray-700 text-left">
                   WORKSPACE NAME
                 </TableHead>
-                <TableHead className="font-semibold text-gray-700">
+                <TableHead className="font-semibold text-gray-700 text-left">
                   OWNER
                 </TableHead>
-                <TableHead className="font-semibold text-gray-700">
+                <TableHead className="font-semibold text-gray-700 text-left">
                   CREATION DATE
                 </TableHead>
-                <TableHead className="font-semibold text-gray-700">
+                <TableHead className="font-semibold text-gray-700 text-left">
                   EVENTS
                 </TableHead>
-                <TableHead className="font-semibold text-gray-700">
+                <TableHead className="font-semibold text-gray-700 text-left">
                   STATUS
                 </TableHead>
                 <TableHead className="font-semibold text-gray-700 text-right">
@@ -212,35 +221,41 @@ export default function DashboardPage() {
                     {ws.name}
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center space-x-3">
-                      <Avatar>
+                    <div className="flex items-center space-x-2 sm:space-x-3">
+                      <Avatar className="w-6 h-6 sm:w-8 sm:h-8">
                         <AvatarImage
                           src={ws.owner.avatar}
                           alt={ws.owner.name}
                         />
                         <AvatarFallback>{ws.owner.name[0]}</AvatarFallback>
                       </Avatar>
-                      <span className="text-gray-800">{ws.owner.name}</span>
+                      <span className="text-gray-800 text-xs sm:text-sm">
+                        {ws.owner.name}
+                      </span>
                     </div>
                   </TableCell>
-                  <TableCell className="text-gray-700">{ws.date}</TableCell>
-                  <TableCell className="text-gray-700">{ws.events}</TableCell>
+                  <TableCell className="text-gray-700 text-xs sm:text-sm">
+                    {ws.date}
+                  </TableCell>
+                  <TableCell className="text-gray-700 text-xs sm:text-sm">
+                    {ws.events}
+                  </TableCell>
                   <TableCell>
                     <StatusBadge status={ws.status} />
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex justify-end items-center gap-3">
+                    <div className="flex justify-end items-center gap-2 sm:gap-3">
                       <button
                         className="text-indigo-600 hover:text-indigo-800 transition"
                         title="Edit"
                       >
-                        <Pencil className="w-5 h-5" />
+                        <Pencil className="w-4 h-4 sm:w-5 sm:h-5" />
                       </button>
                       <button
                         className="text-red-600 hover:text-red-800 transition"
                         title="Delete"
                       >
-                        <Trash2 className="w-5 h-5" />
+                        <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
                       </button>
                     </div>
                   </TableCell>
@@ -251,11 +266,11 @@ export default function DashboardPage() {
         </div>
 
         {/* Pagination */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 md:mt-6 gap-3 sm:gap-0">
           <p className="text-sm text-gray-500">
             Showing 1-{filtered.length} of {workspaces.length}
           </p>
-          <div className="flex items-center gap-2 mt-3 md:mt-0">
+          <div className="flex flex-wrap gap-2 sm:gap-2">
             <Button variant="outline" size="sm" className="border-gray-200">
               Previous
             </Button>
